@@ -157,6 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const openMenuBtn = document.getElementById("open-menu-btn");
   const closeMenuBtn = document.getElementById("close-menu-btn");
 
+  // Debug: Verificar se elementos foram encontrados
+  console.log('🔍 Verificando elementos do menu:');
+  console.log('- sideMenu:', !!sideMenu, sideMenu);
+  console.log('- menuOverlay:', !!menuOverlay, menuOverlay);
+  console.log('- openMenuBtn:', !!openMenuBtn, openMenuBtn);
+  console.log('- closeMenuBtn:', !!closeMenuBtn, closeMenuBtn);
+
   // Carrossel
   const carouselItems = document.querySelectorAll(".carousel-item");
   const totalSlides = carouselItems.length;
@@ -485,9 +492,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Controle do menu lateral
   function toggleMenu() {
     console.log('Toggle menu chamado');
+    console.log('sideMenu exists:', !!sideMenu);
+    console.log('menuOverlay exists:', !!menuOverlay);
+
     if (sideMenu && menuOverlay) {
+      console.log('Menu state before toggle:', sideMenu.classList.contains("open"));
       sideMenu.classList.toggle("open");
       menuOverlay.classList.toggle("hidden");
+      console.log('Menu state after toggle:', sideMenu.classList.contains("open"));
 
       // Adicionar/remover classe no body para prevenir scroll
       document.body.classList.toggle("menu-open");
@@ -496,6 +508,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!sideMenu.classList.contains("open")) {
         closeAllSubcategories();
       }
+    } else {
+      console.error('Elementos do menu não encontrados!');
+      console.log('sideMenu:', sideMenu);
+      console.log('menuOverlay:', menuOverlay);
     }
   }
 
@@ -682,28 +698,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Listeners do menu lateral
+  console.log('Configurando listeners do menu...');
+  console.log('openMenuBtn exists:', !!openMenuBtn);
+
   if (openMenuBtn) {
+    console.log('Adicionando listener ao botão de abrir menu');
     openMenuBtn.addEventListener("click", (e) => {
       e.preventDefault();
       console.log('Botão abrir menu clicado');
       toggleMenu();
     });
+  } else {
+    console.error('Botão de abrir menu não encontrado!');
   }
 
   if (closeMenuBtn) {
+    console.log('Adicionando listener ao botão de fechar menu');
     closeMenuBtn.addEventListener("click", (e) => {
       e.preventDefault();
       console.log('Botão fechar menu clicado');
       toggleMenu();
     });
+  } else {
+    console.error('Botão de fechar menu não encontrado!');
   }
 
   if (menuOverlay) {
+    console.log('Adicionando listener ao overlay');
     menuOverlay.addEventListener("click", (e) => {
       e.preventDefault();
       console.log('Overlay clicado');
       toggleMenu();
     });
+  } else {
+    console.error('Menu overlay não encontrado!');
   }
 
   // Fechar menu com tecla ESC

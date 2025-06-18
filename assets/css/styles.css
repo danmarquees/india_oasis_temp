@@ -348,6 +348,73 @@ body.menu-open {
     font-size: 1.2em;
 }
 
+/* Classes para cores específicas das avaliações */
+.border-saffron-deep {
+    border-color: var(--saffron-deep);
+}
+
+.border-cardamom-green {
+    border-color: var(--cardamom-green);
+}
+
+.border-turmeric-gold {
+    border-color: var(--turmeric-gold);
+}
+
+.from-ginger-cream {
+    --tw-gradient-from: var(--ginger-cream);
+    --tw-gradient-to: rgb(253 246 227 / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.bg-opacity-10 {
+    --tw-bg-opacity: 0.1;
+}
+
+/* Animações para cards de avaliação */
+.review-card {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(247, 147, 30, 0.1),
+        transparent
+    );
+    transition: left 0.6s;
+}
+
+.review-card:hover::before {
+    left: 100%;
+}
+
+.review-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255, 107, 53, 0.25);
+}
+
+/* Estilo para avatares das avaliações */
+.review-avatar {
+    border: 3px solid var(--turmeric-gold);
+    box-shadow: 0 4px 12px rgba(247, 147, 30, 0.3);
+    transition: all 0.3s ease;
+}
+
+.review-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(247, 147, 30, 0.5);
+}
+
 /* Melhorar botão do menu */
 #open-menu-btn {
     transition: all 0.3s ease;
