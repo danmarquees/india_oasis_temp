@@ -1,7 +1,20 @@
 /* Estilos personalizados para complementar o Tailwind */
+/* Paleta de cores inspirada na Índia e especiarias */
+:root {
+    --saffron-deep: #ff6b35; /* Açafrão profundo */
+    --turmeric-gold: #f7931e; /* Açafrão dourado */
+    --cardamom-green: #4a6741; /* Verde cardamomo */
+    --cinnamon-brown: #8b4513; /* Canela */
+    --paprika-red: #cc2936; /* Páprica vermelha */
+    --ginger-cream: #fdf6e3; /* Creme gengibre */
+    --clove-dark: #2f1b14; /* Cravo escuro */
+    --cumin-tan: #d2b48c; /* Bege cominho */
+}
+
 body {
-    font-family: "Lato", sans-serif;
-    background-color: #fff8e1; /* Um tom de creme suave */
+    font-family: "Poppins", "Lato", sans-serif;
+    background: linear-gradient(135deg, var(--ginger-cream) 0%, #fff8dc 100%);
+    color: var(--clove-dark);
 }
 h1,
 h2,
@@ -10,30 +23,92 @@ h4,
 h5,
 h6,
 .font-teko {
-    font-family: "Teko", sans-serif;
-    letter-spacing: 1px;
+    font-family: "Rajdhani", "Teko", sans-serif;
+    letter-spacing: 1.2px;
+    color: var(--cinnamon-brown);
 }
 /* Cores temáticas */
 .bg-primary {
-    background-color: #d84315;
-} /* Laranja Açafrão Escuro */
+    background: linear-gradient(
+        135deg,
+        var(--saffron-deep),
+        var(--turmeric-gold)
+    );
+}
 .text-primary {
-    color: #d84315;
+    color: var(--saffron-deep);
 }
 .bg-secondary {
-    background-color: #00695c;
-} /* Verde Escuro (especiarias) */
+    background: linear-gradient(135deg, var(--cardamom-green), #5d7c56);
+}
 .text-secondary {
-    color: #00695c;
+    color: var(--cardamom-green);
 }
 .bg-accent {
-    background-color: #ffc107;
-} /* Dourado/Amarelo */
+    background: linear-gradient(135deg, var(--turmeric-gold), #ffd700);
+}
 .text-accent {
-    color: #ffc107;
+    color: var(--turmeric-gold);
 }
 .border-primary {
-    border-color: #d84315;
+    border-color: var(--saffron-deep);
+}
+
+/* Padrões decorativos indianos */
+.indian-pattern {
+    background-image:
+        radial-gradient(
+            circle at 25% 25%,
+            var(--turmeric-gold) 2px,
+            transparent 2px
+        ),
+        radial-gradient(
+            circle at 75% 75%,
+            var(--saffron-deep) 1px,
+            transparent 1px
+        );
+    background-size: 20px 20px;
+    background-position:
+        0 0,
+        10px 10px;
+}
+
+.mandala-bg {
+    background-image:
+        radial-gradient(
+            circle at center,
+            transparent 40%,
+            var(--ginger-cream) 41%,
+            var(--ginger-cream) 43%,
+            transparent 44%
+        ),
+        radial-gradient(
+            circle at center,
+            var(--turmeric-gold) 0.5px,
+            transparent 1px
+        );
+    background-size:
+        40px 40px,
+        8px 8px;
+}
+
+.spice-texture {
+    background:
+        linear-gradient(
+            45deg,
+            transparent 30%,
+            var(--cumin-tan) 30%,
+            var(--cumin-tan) 70%,
+            transparent 70%
+        ),
+        linear-gradient(
+            -45deg,
+            transparent 30%,
+            var(--ginger-cream) 30%,
+            var(--ginger-cream) 70%,
+            transparent 70%
+        );
+    background-size: 6px 6px;
 }
 
 /* Tailwind @apply não funciona em CSS puro, então definimos as classes manualmente */
@@ -47,29 +122,73 @@ h6,
     box-shadow:
         0 4px 6px -1px rgb(0 0 0 / 0.1),
         0 2px 4px -2px rgb(0 0 0 / 0.1);
-    transition-property: transform;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
+    transition: all 0.3s ease;
     transform: scale(1);
+    position: relative;
+    overflow: hidden;
 }
 .btn:hover {
     transform: scale(1.05);
 }
 
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
 .btn-primary {
-    background-color: #d84315;
+    background: linear-gradient(
+        135deg,
+        var(--saffron-deep),
+        var(--paprika-red)
+    );
     color: #fff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
 }
 .btn-primary:hover {
-    background-color: #c2410c; /* orange-700 */
+    background: linear-gradient(
+        135deg,
+        var(--paprika-red),
+        var(--saffron-deep)
+    );
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: #00695c;
+    background: linear-gradient(
+        135deg,
+        var(--cardamom-green),
+        var(--cinnamon-brown)
+    );
     color: #fff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(74, 103, 65, 0.3);
 }
 .btn-secondary:hover {
-    background-color: #004d40; /* teal-800 */
+    background: linear-gradient(
+        135deg,
+        var(--cinnamon-brown),
+        var(--cardamom-green)
+    );
+    box-shadow: 0 6px 20px rgba(74, 103, 65, 0.4);
+    transform: translateY(-2px);
 }
 
 /* Animação de Fade-in para as páginas */
@@ -90,12 +209,64 @@ h6,
 .active-page {
     display: block;
 }
-/* Estrela de avaliação */
+/* Estrela de avaliação com brilho */
 .rating .fa-star {
-    color: #e0e0e0; /* Cinza claro */
+    color: #e0e0e0;
+    transition: all 0.3s ease;
 }
 .rating .fa-star.text-accent {
-    color: #ffc107; /* Amarelo */
+    color: var(--turmeric-gold);
+    text-shadow: 0 0 8px rgba(247, 147, 30, 0.5);
+    animation: starGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes starGlow {
+    from {
+        text-shadow: 0 0 5px rgba(247, 147, 30, 0.5);
+    }
+    to {
+        text-shadow:
+            0 0 15px rgba(247, 147, 30, 0.8),
+            0 0 25px rgba(247, 147, 30, 0.3);
+    }
+}
+
+/* Cards com estilo indiano */
+.indian-card {
+    background: linear-gradient(135deg, var(--ginger-cream), #ffffff);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.indian-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        135deg,
+        var(--turmeric-gold),
+        var(--saffron-deep),
+        var(--cardamom-green)
+    );
+    z-index: -1;
+    margin: -2px;
+    border-radius: inherit;
+}
+
+.indian-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+}
+
+/* Elementos decorativos */
+.paisley-decoration {
+    background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20c0-11 9-20 20-20s20 9 20 20-9 20-20 20-20-9-20-20z' fill='%23f7931e' fill-opacity='0.1'/%3E%3C/svg%3E");
+    background-size: 40px 40px;
 }
 
 /* Menu Lateral */
@@ -103,12 +274,114 @@ h6,
     transition: transform 0.3s ease-in-out;
     transform: translateX(-100%);
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
 }
 #side-menu.open {
     transform: translateX(0);
 }
 #menu-overlay {
     transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+}
+#menu-overlay:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Prevenir scroll do body quando menu está aberto */
+body.menu-open {
+    overflow: hidden;
+}
+
+/* Elementos com tema de especiarias */
+.spice-container {
+    background: var(--ginger-cream);
+    border-left: 4px solid var(--turmeric-gold);
+    position: relative;
+}
+
+.spice-container::after {
+    content: "✦";
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: var(--saffron-deep);
+    font-size: 18px;
+    opacity: 0.6;
+}
+
+.ingredient-badge {
+    background: linear-gradient(
+        45deg,
+        var(--turmeric-gold),
+        var(--saffron-deep)
+    );
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(247, 147, 30, 0.3);
+}
+
+/* Texto com estilo indiano */
+.hindi-accent {
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 600;
+    color: var(--cinnamon-brown);
+    text-shadow: 1px 1px 2px rgba(139, 69, 19, 0.1);
+}
+
+.price-highlight {
+    background: linear-gradient(
+        45deg,
+        var(--turmeric-gold),
+        var(--saffron-deep)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+/* Melhorar botão do menu */
+#open-menu-btn {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+#open-menu-btn:hover {
+    transform: scale(1.1);
+    color: #d84315;
+}
+
+/* Animação de pulse para demonstração */
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(216, 67, 21, 0.7);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(216, 67, 21, 0);
+    }
+}
+
+/* Tooltip para demonstração */
+.demo-tooltip {
+    position: absolute;
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10000;
 }
 
 /* Estilos para categorias e subcategorias */

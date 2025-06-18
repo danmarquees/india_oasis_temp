@@ -484,8 +484,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Controle do menu lateral
   function toggleMenu() {
-    sideMenu.classList.toggle("open");
-    menuOverlay.classList.toggle("hidden");
+    console.log('Toggle menu chamado');
+    if (sideMenu && menuOverlay) {
+      sideMenu.classList.toggle("open");
+      menuOverlay.classList.toggle("hidden");
+
+      // Adicionar/remover classe no body para prevenir scroll
+      document.body.classList.toggle("menu-open");
+
+      // Fechar subcategorias quando menu fecha
+      if (!sideMenu.classList.contains("open")) {
+        closeAllSubcategories();
+      }
+    }
+  }
+
+  // Função para fechar todas as subcategorias
+  function closeAllSubcategories() {
+    document.querySelectorAll(".subcategory-list").forEach((list) => {
+      list.classList.remove("show");
+      list.classList.add("hidden");
+    });
+    document.querySelectorAll(".category-toggle").forEach((btn) => {
+      btn.classList.remove("active");
+    });
   }
 
   // Controle do Carrossel
@@ -660,24 +682,59 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Listeners do menu lateral
-  openMenuBtn.addEventListener("click", toggleMenu);
-  closeMenuBtn.addEventListener("click", toggleMenu);
-  menuOverlay.addEventListener("click", toggleMenu);
+  if (openMenuBtn) {
+    openMenuBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log('Botão abrir menu clicado');
+      toggleMenu();
+    });
+  }
+
+  if (closeMenuBtn) {
+    closeMenuBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log('Botão fechar menu clicado');
+      toggleMenu();
+    });
+  }
+
+  if (menuOverlay) {
+    menuOverlay.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log('Overlay clicado');
+      toggleMenu();
+    });
+  }
+
+  // Fechar menu com tecla ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && sideMenu && sideMenu.classList.contains("open")) {
+      toggleMenu();
+    }
+  });
 
   // Listeners para subcategorias
   document.querySelectorAll(".category-toggle").forEach((toggle) => {
-    toggle.addEventListener("click", function () {
-      const subcategoryList =
-        this.parentElement.querySelector(".subcategory-list");
+    toggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      console.log('Subcategoria clicada:', this.textContent);
+
+      const subcategoryList = this.parentElement.querySelector(".subcategory-list");
+      if (!subcategoryList) return;
+
       const isOpen = subcategoryList.classList.contains("show");
 
       // Fecha todas as outras subcategorias
       document.querySelectorAll(".subcategory-list").forEach((list) => {
-        list.classList.remove("show");
-        list.classList.add("hidden");
+        if (list !== subcategoryList) {
+          list.classList.remove("show");
+          list.classList.add("hidden");
+        }
       });
       document.querySelectorAll(".category-toggle").forEach((btn) => {
-        btn.classList.remove("active");
+        if (btn !== this) {
+          btn.classList.remove("active");
+        }
       });
 
       // Alterna a subcategoria atual
@@ -685,6 +742,10 @@ document.addEventListener("DOMContentLoaded", () => {
         subcategoryList.classList.remove("hidden");
         subcategoryList.classList.add("show");
         this.classList.add("active");
+      } else {
+        subcategoryList.classList.remove("show");
+        subcategoryList.classList.add("hidden");
+        this.classList.remove("active");
       }
     });
   });
@@ -794,6 +855,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function init() {
     console.log("Inicializando India Oasis...");
 
+    // Verificar se elementos do menu existem
+    console.log("Elementos do menu:", {
+      sideMenu: !!sideMenu,
+      menuOverlay: !!menuOverlay,
+      openMenuBtn: !!openMenuBtn,
+      closeMenuBtn: !!closeMenuBtn
+    });
+
     const productListContainer = document.getElementById("product-list");
     if (productListContainer) {
       productListContainer.innerHTML = products.map(createProductCard).join("");
@@ -805,10 +874,60 @@ document.addEventListener("DOMContentLoaded", () => {
     showPage("home");
     setInterval(nextSlide, 5000); // Avança o slide a cada 5 segundos
 
+    // Adicionar funcionalidade de demonstração
+    setupDemoFeatures();
+
     console.log("Menu lateral inicializado com", products.length, "produtos");
     console.log(
       "Funcionalidades ativas: busca, categorias expandíveis, contadores",
     );
+  }
+
+  // Configurar recursos de demonstração
+  function setupDemoFeatures() {
+    // Adicionar indicador visual para o botão do menu
+    if (openMenuBtn) {
+      openMenuBtn.style.position = 'relative';
+
+      // Criar tooltip
+      const tooltip = document.createElement('div');
+      tooltip.className = 'demo-tooltip';
+      tooltip.textContent = 'Clique para abrir o menu';
+      tooltip.style.cssText = `
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #333;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+        z-index: 1000;
+      `;
+
+      openMenuBtn.appendChild(tooltip);
+
+      // Mostrar tooltip no hover
+      openMenuBtn.addEventListener('mouseenter', () => {
+        tooltip.style.opacity = '1';
+      });
+
+      openMenuBtn.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
+      });
+    }
+
+    // Adicionar animação de chamada de atenção
+    setTimeout(() => {
+      if (openMenuBtn) {
+        openMenuBtn.style.animation = 'pulse 2s infinite';
+      }
+    }, 2000);
   }
 
   // Função para filtrar categorias no menu baseado na busca
