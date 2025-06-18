@@ -1374,78 +1374,325 @@
         </div>
 
         <!-- ==== RODAPÉ ==== -->
-        <footer class="bg-secondary text-white mt-12">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <footer
+            class="bg-gradient-to-r from-secondary to-primary text-white mt-16 relative overflow-hidden"
+        >
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-10">
+                <div class="paisley-decoration h-full w-full"></div>
+            </div>
+
+            <div
+                class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-10"
+            >
+                <!-- Main Footer Content -->
                 <div
-                    class="grid grid-cols-1 md:grid-cols-3 text-center md:text-left gap-8"
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8"
                 >
-                    <div>
-                        <h4 class="font-teko text-2xl mb-2">India Oasis</h4>
-                        <p class="text-sm">
-                            Importando os sabores autênticos da Índia para sua
-                            casa.
+                    <!-- Company Info -->
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center mb-4">
+                            <i
+                                class="fas fa-seedling text-3xl text-accent mr-3"
+                            ></i>
+                            <h3 class="font-teko text-3xl text-accent">
+                                India Oasis
+                            </h3>
+                        </div>
+                        <p class="text-gray-200 mb-4 leading-relaxed">
+                            Trazendo os autênticos sabores e aromas da Índia
+                            diretamente para sua mesa. Especiarias premium, chás
+                            tradicionais e ingredientes selecionados com amor e
+                            tradição milenar.
                         </p>
+                        <div class="flex items-center text-sm text-gray-300">
+                            <i class="fas fa-shield-alt text-accent mr-2"></i>
+                            <span>Produtos 100% naturais e certificados</span>
+                        </div>
                     </div>
+
+                    <!-- Quick Links -->
                     <div>
-                        <h4 class="font-teko text-2xl mb-2">Navegue</h4>
-                        <ul class="space-y-1">
+                        <h4
+                            class="font-rajdhani text-xl font-semibold mb-4 text-accent"
+                        >
+                            <i class="fas fa-compass mr-2"></i>
+                            Navegação
+                        </h4>
+                        <ul class="space-y-2">
                             <li>
                                 <a
                                     href="index.html"
-                                    class="hover:text-accent text-sm"
-                                    >Início</a
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
                                 >
+                                    <i class="fas fa-home w-4 mr-2"></i>
+                                    Início
+                                </a>
                             </li>
                             <li>
                                 <a
                                     href="products.html"
-                                    class="hover:text-accent text-sm"
-                                    >Produtos</a
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
                                 >
-                            </li>
-                            <li>
-                                <a
-                                    href="contact.html"
-                                    class="hover:text-accent text-sm"
-                                    >Contato</a
-                                >
+                                    <i class="fas fa-box w-4 mr-2"></i>
+                                    Produtos
+                                </a>
                             </li>
                             <li>
                                 <a
                                     href="about.html"
-                                    class="hover:text-accent text-sm"
-                                    >Sobre Nós</a
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
                                 >
+                                    <i class="fas fa-heart w-4 mr-2"></i>
+                                    Sobre Nós
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="contact.html"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-envelope w-4 mr-2"></i>
+                                    Contato
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="cart.html"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i
+                                        class="fas fa-shopping-cart w-4 mr-2"
+                                    ></i>
+                                    Carrinho
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="wishlist.html"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-star w-4 mr-2"></i>
+                                    Lista de Desejos
+                                </a>
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Categories -->
                     <div>
-                        <h4 class="font-teko text-2xl mb-2">Siga-nos</h4>
-                        <div
-                            class="flex justify-center md:justify-start space-x-4"
+                        <h4
+                            class="font-rajdhani text-xl font-semibold mb-4 text-accent"
                         >
-                            <a href="#" class="hover:text-accent"
-                                ><i class="fab fa-instagram fa-lg"></i
-                            ></a>
-                            <a href="#" class="hover:text-accent"
-                                ><i class="fab fa-facebook fa-lg"></i
-                            ></a>
-                            <a href="#" class="hover:text-accent"
-                                ><i class="fab fa-pinterest fa-lg"></i
-                            ></a>
+                            <i class="fas fa-tags mr-2"></i>
+                            Categorias
+                        </h4>
+                        <ul class="space-y-2">
+                            <li>
+                                <a
+                                    href="products.html?category=temperos"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-pepper-hot w-4 mr-2"></i>
+                                    Temperos
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html?category=chas"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-mug-hot w-4 mr-2"></i>
+                                    Chás
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html?category=graos"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-seedling w-4 mr-2"></i>
+                                    Grãos
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html?category=oleos"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-tint w-4 mr-2"></i>
+                                    Óleos
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html?category=combos"
+                                    class="text-gray-200 hover:text-accent transition-colors text-sm flex items-center"
+                                >
+                                    <i class="fas fa-gift w-4 mr-2"></i>
+                                    Combos
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h4
+                            class="font-rajdhani text-xl font-semibold mb-4 text-accent"
+                        >
+                            <i class="fas fa-headset mr-2"></i>
+                            Fale Conosco
+                        </h4>
+                        <div class="space-y-3">
+                            <!-- WhatsApp -->
+                            <a
+                                href="https://wa.me/5511987654321"
+                                target="_blank"
+                                class="flex items-center text-gray-200 hover:text-accent transition-colors text-sm group"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-green-400 to-green-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-lg"
+                                >
+                                    <i
+                                        class="fab fa-whatsapp text-white text-lg"
+                                    ></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">(11) 98765-4321</p>
+                                    <p class="text-xs text-gray-300">
+                                        WhatsApp • 24h
+                                    </p>
+                                </div>
+                            </a>
+
+                            <!-- Phone -->
+                            <a
+                                href="tel:+55114003-2024"
+                                class="flex items-center text-gray-200 hover:text-accent transition-colors text-sm group"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-lg"
+                                >
+                                    <i class="fas fa-phone text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">4003-2024</p>
+                                    <p class="text-xs text-gray-300">
+                                        SAC • Seg à Sex, 8h às 20h
+                                    </p>
+                                </div>
+                            </a>
+
+                            <!-- Email Principal -->
+                            <a
+                                href="mailto:contato@indiaoasis.com.br"
+                                class="flex items-center text-gray-200 hover:text-accent transition-colors text-sm group"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-red-400 to-red-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-lg"
+                                >
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">
+                                        contato@indiaoasis.com.br
+                                    </p>
+                                    <p class="text-xs text-gray-300">
+                                        Geral • Resposta em até 2h
+                                    </p>
+                                </div>
+                            </a>
+
+                            <!-- Email Vendas -->
+                            <a
+                                href="mailto:vendas@indiaoasis.com.br"
+                                class="flex items-center text-gray-200 hover:text-accent transition-colors text-sm group"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-lg"
+                                >
+                                    <i
+                                        class="fas fa-shopping-bag text-white"
+                                    ></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">
+                                        vendas@indiaoasis.com.br
+                                    </p>
+                                    <p class="text-xs text-gray-300">
+                                        Vendas • Pedidos especiais
+                                    </p>
+                                </div>
+                            </a>
+
+                            <!-- Telefone Vendas -->
+                            <a
+                                href="tel:+55113456-7890"
+                                class="flex items-center text-gray-200 hover:text-accent transition-colors text-sm group"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full flex items-center justify-center mr-3 group-hover:scale-110 transition-transform shadow-lg"
+                                >
+                                    <i
+                                        class="fas fa-phone-volume text-white"
+                                    ></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">(11) 3456-7890</p>
+                                    <p class="text-xs text-gray-300">
+                                        Vendas • Seg à Sex, 9h às 18h
+                                    </p>
+                                </div>
+                            </a>
+
+                            <!-- Address -->
+                            <div
+                                class="flex items-center text-gray-200 text-sm pt-2 border-t border-white border-opacity-20"
+                            >
+                                <div
+                                    class="w-10 h-10 bg-gradient-to-r from-teal-400 to-teal-600 rounded-full flex items-center justify-center mr-3 shadow-lg"
+                                >
+                                    <i
+                                        class="fas fa-map-marker-alt text-white"
+                                    ></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold">
+                                        Rua das Especiarias, 123
+                                    </p>
+                                    <p class="text-xs text-gray-300">
+                                        Vila Madalena, São Paulo - SP
+                                    </p>
+                                    <p class="text-xs text-gray-300">
+                                        CEP: 05433-000
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div
-                    class="border-t border-teal-700 mt-8 pt-6 text-center text-sm"
-                >
-                    <p>
-                        &copy; 2024 - India Oasis - Todos os direitos
-                        reservados.
-                    </p>
-                </div>
-            </div>
-        </footer>
+
+                <!-- Newsletter -->
+                <div class="border-t border-white border-opacity-20 pt-8 mb-8">
+                    <div class="max-w-2xl mx-auto text-center">
+                        <h4
+                            class="font-rajdhani text-2xl font-semibold mb-3 text-accent"
+                        >
+                            <i class="fas fa-bell mr-2"></i>
+                            Receba Ofertas Especiais
+                        </h4>
+                        <p class="text-gray-200 mb-4">
+                            Cadastre-se e seja o primeiro a saber sobre novos
+                            produtos, receitas exclusivas e promoções
+                            imperdíveis!
+                        </p>
+                        <div
+                            class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+                        >
+                            <input
+                                type="email"
+                                placeholder="Seu melhor email"
 
         <!-- ==== MODAL DE FEEDBACK ==== -->
         <div
