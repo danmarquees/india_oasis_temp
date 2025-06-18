@@ -1,0 +1,120 @@
+/* Estilos personalizados para complementar o Tailwind */
+body {
+    font-family: "Lato", sans-serif;
+    background-color: #fff8e1; /* Um tom de creme suave */
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-teko {
+    font-family: "Teko", sans-serif;
+    letter-spacing: 1px;
+}
+/* Cores temáticas */
+.bg-primary {
+    background-color: #d84315;
+} /* Laranja Açafrão Escuro */
+.text-primary {
+    color: #d84315;
+}
+.bg-secondary {
+    background-color: #00695c;
+} /* Verde Escuro (especiarias) */
+.text-secondary {
+    color: #00695c;
+}
+.bg-accent {
+    background-color: #ffc107;
+} /* Dourado/Amarelo */
+.text-accent {
+    color: #ffc107;
+}
+.border-primary {
+    border-color: #d84315;
+}
+
+/* Tailwind @apply não funciona em CSS puro, então definimos as classes manualmente */
+.btn {
+    font-weight: 700;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    box-shadow:
+        0 4px 6px -1px rgb(0 0 0 / 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+    transform: scale(1);
+}
+.btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-primary {
+    background-color: #d84315;
+    color: #fff;
+}
+.btn-primary:hover {
+    background-color: #c2410c; /* orange-700 */
+}
+
+.btn-secondary {
+    background-color: #00695c;
+    color: #fff;
+}
+.btn-secondary:hover {
+    background-color: #004d40; /* teal-800 */
+}
+
+/* Animação de Fade-in para as páginas */
+.page {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.active-page {
+    display: block;
+}
+/* Estrela de avaliação */
+.rating .fa-star {
+    color: #e0e0e0; /* Cinza claro */
+}
+.rating .fa-star.text-accent {
+    color: #ffc107; /* Amarelo */
+}
+
+/* Menu Lateral */
+#side-menu {
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+}
+#side-menu.open {
+    transform: translateX(0);
+}
+#menu-overlay {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Carrossel */
+.carousel-item {
+    display: none;
+    animation: fadeIn 1s;
+}
+.carousel-item.active {
+    display: flex;
+}

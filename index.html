@@ -4,104 +4,127 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>India Oasis - Temperos e Sabores da Índia</title>
+
+        <!-- Tailwind CSS -->
         <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Fontes do Google -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;700&family=Lato:wght@300;400;700&display=swap"
             rel="stylesheet"
         />
+
+        <!-- Font Awesome (Ícones) -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         />
-        <style>
-            /* Estilos personalizados para complementar o Tailwind */
-            body {
-                font-family: "Lato", sans-serif;
-                background-color: #fff8e1; /* Um tom de creme suave */
-            }
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6,
-            .font-teko {
-                font-family: "Teko", sans-serif;
-                letter-spacing: 1px;
-            }
-            /* Cores temáticas */
-            .bg-primary {
-                background-color: #d84315;
-            } /* Laranja Açafrão Escuro */
-            .text-primary {
-                color: #d84315;
-            }
-            .bg-secondary {
-                background-color: #00695c;
-            } /* Verde Escuro (especiarias) */
-            .text-secondary {
-                color: #00695c;
-            }
-            .bg-accent {
-                background-color: #ffc107;
-            } /* Dourado/Amarelo */
-            .text-accent {
-                color: #ffc107;
-            }
-            .border-primary {
-                border-color: #d84315;
-            }
 
-            .btn {
-                @apply font-bold py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105;
-            }
-            .btn-primary {
-                @apply bg-primary text-white hover:bg-orange-700;
-            }
-            .btn-secondary {
-                @apply bg-secondary text-white hover:bg-teal-800;
-            }
-            /* Animação de Fade-in para as páginas */
-            .page {
-                display: none;
-                animation: fadeIn 0.5s ease-in-out;
-            }
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(10px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            .active-page {
-                display: block;
-            }
-            /* Estrela de avaliação */
-            .rating .fa-star {
-                color: #e0e0e0; /* Cinza claro */
-            }
-            .rating .fa-star.text-accent {
-                color: #ffc107; /* Amarelo */
-            }
-        </style>
+        <!-- Link para o arquivo CSS externo -->
+        <link rel="stylesheet" href="styles.css" />
     </head>
     <body class="text-gray-800">
+        <!-- ==== MENU LATERAL RETRÁTIL ==== -->
+        <div
+            id="menu-overlay"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 z-50"
+        ></div>
+        <aside
+            id="side-menu"
+            class="fixed top-0 left-0 w-72 h-full bg-white shadow-lg z-50 overflow-y-auto"
+        >
+            <div class="p-4">
+                <button
+                    id="close-menu-btn"
+                    class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-primary"
+                >
+                    &times;
+                </button>
+                <h2 class="text-3xl font-teko text-primary mb-6">Menu</h2>
+
+                <!-- Barra de Busca -->
+                <div class="relative mb-6">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Buscar produtos..."
+                        class="w-full pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <i
+                        class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    ></i>
+                </div>
+
+                <!-- Categorias -->
+                <h3 class="font-teko text-2xl text-secondary mb-2">
+                    Categorias
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="all"
+                            >Todos os Produtos</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Temperos"
+                            >Temperos e Masalas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Chás"
+                            >Chás e Infusões</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Grãos"
+                            >Grãos e Lentilhas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Acompanhamentos"
+                            >Acompanhamentos</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
         <!-- ==== CABEÇALHO ==== -->
-        <header class="bg-white shadow-md sticky top-0 z-50">
+        <header class="bg-white shadow-md sticky top-0 z-40">
             <nav
                 class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center"
             >
-                <a
-                    href="#"
-                    class="nav-link text-3xl font-teko text-primary"
-                    data-page="home"
-                    >India Oasis</a
-                >
+                <div class="flex items-center space-x-4">
+                    <button
+                        id="open-menu-btn"
+                        class="text-xl hover:text-primary"
+                    >
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a
+                        href="#"
+                        class="nav-link text-3xl font-teko text-primary"
+                        data-page="home"
+                        >India Oasis</a
+                    >
+                </div>
                 <div class="hidden md:flex items-center space-x-6">
                     <a
                         href="#"
@@ -114,6 +137,12 @@
                         class="nav-link text-lg hover:text-primary"
                         data-page="products"
                         >Produtos</a
+                    >
+                    <a
+                        href="#"
+                        class="nav-link text-lg hover:text-primary"
+                        data-page="contact"
+                        >Contato</a
                     >
                     <a
                         href="#"
@@ -142,60 +171,117 @@
                             >0</span
                         >
                     </button>
-                    <button class="md:hidden" id="mobile-menu-btn">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
                 </div>
             </nav>
-            <!-- Menu Mobile -->
-            <div id="mobile-menu" class="hidden md:hidden bg-white py-2">
-                <a
-                    href="#"
-                    class="block nav-link text-center py-2 hover:bg-primary hover:text-white"
-                    data-page="home"
-                    >Início</a
-                >
-                <a
-                    href="#"
-                    class="block nav-link text-center py-2 hover:bg-primary hover:text-white"
-                    data-page="products"
-                    >Produtos</a
-                >
-                <a
-                    href="#"
-                    class="block nav-link text-center py-2 hover:bg-primary hover:text-white"
-                    data-page="about"
-                    >Sobre Nós</a
-                >
-            </div>
         </header>
 
         <main id="main-content" class="container mx-auto p-4 sm:p-6 lg:p-8">
             <!-- ==== PÁGINA INICIAL ==== -->
             <div id="home-page" class="page active-page">
-                <!-- Hero Section -->
+                <!-- Hero Carousel Section -->
                 <section
-                    class="bg-secondary text-white rounded-lg p-8 md:p-16 flex flex-col md:flex-row items-center mb-12"
-                    style="
-                        background-image: url(&quot;https://placehold.co/1200x400/00695C/FFF8E1?text=Especiarias+Indianas&quot;);
-                        background-size: cover;
-                        background-position: center;
-                    "
+                    class="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg mb-12"
                 >
-                    <div class="md:w-1/2 text-center md:text-left mb-6 md:mb-0">
-                        <h1 class="text-5xl md:text-7xl font-teko mb-4">
-                            Sabores da Índia, Direto para sua Cozinha
-                        </h1>
-                        <p class="mb-6 text-lg">
-                            Explore uma seleção autêntica de temperos, chás e
-                            iguarias que trazem a alma da culinária indiana.
-                        </p>
-                        <button
-                            class="btn btn-primary nav-link"
-                            data-page="products"
+                    <div id="carousel-container">
+                        <!-- Slide 1 -->
+                        <div
+                            class="carousel-item active bg-secondary text-white h-full items-center"
+                            style="
+                                background-image: url(&quot;https://placehold.co/1200x400/00695C/FFF8E1?text=Especiarias+Arom%C3%A1ticas&quot;);
+                                background-size: cover;
+                                background-position: center;
+                            "
                         >
-                            Ver Coleção
-                        </button>
+                            <div
+                                class="w-full md:w-1/2 p-8 text-center md:text-left"
+                            >
+                                <h1 class="text-5xl md:text-7xl font-teko mb-4">
+                                    Sabores da Índia, Direto para sua Cozinha
+                                </h1>
+                                <p class="mb-6 text-lg">
+                                    Explore uma seleção autêntica de temperos
+                                    que trazem a alma da culinária indiana.
+                                </p>
+                                <button
+                                    class="btn btn-primary nav-link"
+                                    data-page="products"
+                                >
+                                    Ver Temperos
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div
+                            class="carousel-item bg-primary text-white h-full items-center"
+                            style="
+                                background-image: url(&quot;https://placehold.co/1200x400/D84315/FFFFFF?text=Ch%C3%A1s+Reconfortantes&quot;);
+                                background-size: cover;
+                                background-position: center;
+                            "
+                        >
+                            <div
+                                class="w-full md:w-1/2 p-8 text-center md:text-left"
+                            >
+                                <h1 class="text-5xl md:text-7xl font-teko mb-4">
+                                    Aconchego em Cada Gole
+                                </h1>
+                                <p class="mb-6 text-lg">
+                                    Descubra nossos chás e infusões, perfeitos
+                                    para um momento de paz e sabor.
+                                </p>
+                                <button
+                                    class="btn btn-secondary nav-link"
+                                    data-page="products"
+                                >
+                                    Ver Chás
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Carousel Controls -->
+                    <button
+                        id="prev-slide"
+                        class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white text-black p-2 rounded-full"
+                    >
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button
+                        id="next-slide"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 hover:bg-white text-black p-2 rounded-full"
+                    >
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </section>
+
+                <!-- Blocos de Informação -->
+                <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <div
+                        class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4"
+                    >
+                        <i class="fas fa-truck-fast text-4xl text-primary"></i>
+                        <div>
+                            <h3 class="text-2xl font-teko text-secondary">
+                                Entrega em todo o Brasil
+                            </h3>
+                            <p>
+                                Receba seus produtos favoritos no conforto da
+                                sua casa, onde quer que você esteja.
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-lg shadow-md flex items-center space-x-4"
+                    >
+                        <i class="fas fa-credit-card text-4xl text-primary"></i>
+                        <div>
+                            <h3 class="text-2xl font-teko text-secondary">
+                                Pagamento Facilitado
+                            </h3>
+                            <p>
+                                Aceitamos cartão de crédito, PIX e boleto.
+                                Compre com segurança e praticidade.
+                            </p>
+                        </div>
                     </div>
                 </section>
 
@@ -226,6 +312,21 @@
                         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                     >
                         <!-- Cards de produtos serão inseridos aqui pelo JS -->
+                    </div>
+                </section>
+
+                <!-- Avaliações em Destaque -->
+                <section class="mt-12 bg-white p-8 rounded-lg shadow-md">
+                    <h2
+                        class="text-4xl font-teko text-center text-secondary mb-8"
+                    >
+                        O que nossos clientes dizem
+                    </h2>
+                    <div
+                        id="featured-reviews"
+                        class="grid grid-cols-1 md:grid-cols-3 gap-8"
+                    >
+                        <!-- Cards de avaliações serão inseridos aqui pelo JS -->
                     </div>
                 </section>
             </div>
@@ -379,6 +480,82 @@
                 </div>
             </div>
 
+            <!-- ==== PÁGINA DE CONTATO ==== -->
+            <div id="contact-page" class="page">
+                <h1 class="text-5xl font-teko text-center text-secondary mb-8">
+                    Fale Conosco
+                </h1>
+                <div
+                    class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md"
+                >
+                    <p class="text-center mb-6">
+                        Tem alguma dúvida, sugestão ou gostaria de saber mais
+                        sobre nossos produtos? Preencha o formulário abaixo e
+                        nossa equipe entrará em contato em breve.
+                    </p>
+                    <form id="contact-form">
+                        <div class="mb-4">
+                            <label
+                                for="contact-name"
+                                class="block mb-1 font-semibold"
+                                >Seu Nome</label
+                            >
+                            <input
+                                type="text"
+                                id="contact-name"
+                                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                                required
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label
+                                for="contact-email"
+                                class="block mb-1 font-semibold"
+                                >Seu E-mail</label
+                            >
+                            <input
+                                type="email"
+                                id="contact-email"
+                                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                                required
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label
+                                for="contact-subject"
+                                class="block mb-1 font-semibold"
+                                >Assunto</label
+                            >
+                            <input
+                                type="text"
+                                id="contact-subject"
+                                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                                required
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label
+                                for="contact-message"
+                                class="block mb-1 font-semibold"
+                                >Sua Mensagem</label
+                            >
+                            <textarea
+                                id="contact-message"
+                                rows="5"
+                                class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                                required
+                            ></textarea>
+                        </div>
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-full text-lg"
+                        >
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+            </div>
+
             <!-- ==== PÁGINA SOBRE NÓS ==== -->
             <div id="about-page" class="page">
                 <h1 class="text-5xl font-teko text-center text-secondary mb-8">
@@ -414,21 +591,78 @@
 
         <!-- ==== RODAPÉ ==== -->
         <footer class="bg-secondary text-white mt-12">
-            <div
-                class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center"
-            >
-                <p class="font-teko text-2xl mb-2">India Oasis</p>
-                <p>&copy; 2024 - Todos os direitos reservados.</p>
-                <div class="flex justify-center space-x-4 mt-4">
-                    <a href="#" class="hover:text-accent"
-                        ><i class="fab fa-instagram fa-lg"></i
-                    ></a>
-                    <a href="#" class="hover:text-accent"
-                        ><i class="fab fa-facebook fa-lg"></i
-                    ></a>
-                    <a href="#" class="hover:text-accent"
-                        ><i class="fab fa-pinterest fa-lg"></i
-                    ></a>
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 text-center md:text-left gap-8"
+                >
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">India Oasis</h4>
+                        <p class="text-sm">
+                            Importando os sabores autênticos da Índia para sua
+                            casa.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Navegue</h4>
+                        <ul class="space-y-1">
+                            <li>
+                                <a
+                                    href="#"
+                                    class="nav-link hover:text-accent text-sm"
+                                    data-page="home"
+                                    >Início</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="nav-link hover:text-accent text-sm"
+                                    data-page="products"
+                                    >Produtos</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="nav-link hover:text-accent text-sm"
+                                    data-page="contact"
+                                    >Contato</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="#"
+                                    class="nav-link hover:text-accent text-sm"
+                                    data-page="about"
+                                    >Sobre Nós</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Siga-nos</h4>
+                        <div
+                            class="flex justify-center md:justify-start space-x-4"
+                        >
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-instagram fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-facebook fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-pinterest fa-lg"></i
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="border-t border-teal-700 mt-8 pt-6 text-center text-sm"
+                >
+                    <p>
+                        &copy; 2024 - India Oasis - Todos os direitos
+                        reservados.
+                    </p>
                 </div>
             </div>
         </footer>
@@ -449,669 +683,7 @@
             </div>
         </div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", () => {
-                // ======================================================
-                // BANCO DE DADOS SIMULADO (MOCK DATA)
-                // ======================================================
-                const products = [
-                    {
-                        id: 1,
-                        name: "Garam Masala Premium",
-                        price: 25.0,
-                        image: "https://placehold.co/400x400/D84315/FFFFFF?text=Garam+Masala",
-                        description:
-                            "Nossa mistura exclusiva de especiarias torradas e moídas na hora. Essencial para dar um toque quente e aromático a pratos de curry, lentilhas e vegetais.",
-                        rating: 4.9,
-                        reviews: [
-                            {
-                                author: "Ricardo F.",
-                                text: "O melhor garam masala que já comprei! Muito aromático.",
-                                rating: 5,
-                            },
-                            {
-                                author: "Juliana M.",
-                                text: "Transformou meu curry de grão de bico. Recomendo!",
-                                rating: 5,
-                            },
-                        ],
-                    },
-                    {
-                        id: 2,
-                        name: "Cúrcuma (Açafrão-da-terra) Pura",
-                        price: 18.0,
-                        image: "https://placehold.co/400x400/FFC107/333333?text=C%C3%BArcuma",
-                        description:
-                            "Cúrcuma em pó 100% pura, de cor vibrante e sabor terroso. Conhecida por suas propriedades anti-inflamatórias, é um ingrediente chave na culinária e medicina ayurvédica.",
-                        rating: 4.8,
-                        reviews: [
-                            {
-                                author: "Lucas T.",
-                                text: "Cor e sabor incríveis. Produto de alta qualidade.",
-                                rating: 5,
-                            },
-                        ],
-                    },
-                    {
-                        id: 3,
-                        name: "Chá Masala Chai Tradicional",
-                        price: 32.0,
-                        image: "https://placehold.co/400x400/8D6E63/FFFFFF?text=Masala+Chai",
-                        description:
-                            "Uma mistura revigorante de chá preto Assam com cardamomo, canela, cravo e gengibre. Prepare um chai autêntico e cremoso em casa.",
-                        rating: 5.0,
-                        reviews: [
-                            {
-                                author: "Camila G.",
-                                text: "O melhor chai que já tomei! Cheirinho maravilhoso.",
-                                rating: 5,
-                            },
-                        ],
-                    },
-                    {
-                        id: 4,
-                        name: "Sementes de Cominho Inteiras",
-                        price: 15.0,
-                        image: "https://placehold.co/400x400/5D4037/FFFFFF?text=Cominho",
-                        description:
-                            "Sementes de cominho de alta qualidade, perfeitas para serem torradas e liberarem seu aroma inconfundível. Use em pães, arroz e pratos de legumes.",
-                        rating: 4.7,
-                        reviews: [
-                            {
-                                author: "Pedro A.",
-                                text: "Muito frescas e aromáticas.",
-                                rating: 4.5,
-                            },
-                        ],
-                    },
-                    {
-                        id: 5,
-                        name: "Lentilha Vermelha (Masoor Dal)",
-                        price: 22.0,
-                        image: "https://placehold.co/400x400/BF360C/FFFFFF?text=Lentilha+Vermelha",
-                        description:
-                            "Lentilhas vermelhas que cozinham rapidamente, ideais para sopas e o tradicional prato indiano 'dal'. Ricas em proteína e sabor.",
-                        rating: 4.9,
-                        reviews: [],
-                    },
-                    {
-                        id: 6,
-                        name: "Arroz Basmati Envelhecido",
-                        price: 35.0,
-                        image: "https://placehold.co/400x400/CFD8DC/37474F?text=Arroz+Basmati",
-                        description:
-                            "Grãos longos e aromáticos de arroz Basmati, envelhecido para perfeição. Fica soltinho e é o acompanhamento ideal para qualquer curry.",
-                        rating: 5.0,
-                        reviews: [],
-                    },
-                    {
-                        id: 7,
-                        name: "Chutney de Manga Agridocce",
-                        price: 28.0,
-                        image: "https://placehold.co/400x400/F9A825/FFFFFF?text=Chutney+de+Manga",
-                        description:
-                            "Um delicioso chutney de manga com um equilíbrio perfeito entre doce, picante e ácido. Sirva com samosas, pães ou como acompanhamento de carnes.",
-                        rating: 4.8,
-                        reviews: [],
-                    },
-                    {
-                        id: 8,
-                        name: "Pasta de Gengibre e Alho",
-                        price: 19.0,
-                        image: "https://placehold.co/400x400/BCAAA4/3E2723?text=Pasta+de+Gengibre",
-                        description:
-                            "Poupe tempo na cozinha com nossa pasta de gengibre e alho frescos. A base perfeita e prática para a maioria dos pratos indianos.",
-                        rating: 4.9,
-                        reviews: [],
-                    },
-                ];
-
-                // ======================================================
-                // ESTADO DA APLICAÇÃO
-                // ======================================================
-                let cartItems = [];
-                let wishlistItems = [];
-
-                // ======================================================
-                // SELETORES DE ELEMENTOS DO DOM
-                // ======================================================
-                const mainContent = document.getElementById("main-content");
-                const pages = document.querySelectorAll(".page");
-                const navLinks = document.querySelectorAll(".nav-link");
-                const cartCountEl = document.getElementById("cart-count");
-                const wishlistCountEl =
-                    document.getElementById("wishlist-count");
-                const mobileMenuBtn =
-                    document.getElementById("mobile-menu-btn");
-                const mobileMenu = document.getElementById("mobile-menu");
-                const wishlistBtn = document.getElementById("wishlist-btn");
-                const cartBtn = document.getElementById("cart-btn");
-
-                // ======================================================
-                // FUNÇÕES DE RENDERIZAÇÃO
-                // ======================================================
-
-                // Renderiza um único card de produto
-                function createProductCard(product) {
-                    const isWishlisted = wishlistItems.includes(product.id);
-                    const wishlistedClass = isWishlisted
-                        ? "text-primary"
-                        : "text-gray-300";
-
-                    return `
-                <div class="bg-white rounded-lg shadow-md overflow-hidden group transform hover:-translate-y-2 transition-transform duration-300">
-                    <div class="relative">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-56 object-cover cursor-pointer product-link" data-id="${product.id}">
-                        <button class="wishlist-toggle absolute top-2 right-2 bg-white rounded-full p-2 shadow-md hover:text-primary ${wishlistedClass}" data-id="${product.id}">
-                            <i class="fas fa-heart text-xl"></i>
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="text-xl font-teko h-12 cursor-pointer product-link" data-id="${product.id}">${product.name}</h3>
-                        <div class="flex justify-between items-center mt-2">
-                            <p class="text-lg font-bold text-primary">R$ ${product.price.toFixed(2)}</p>
-                            <div class="rating">
-                                ${renderStars(product.rating, false)}
-                            </div>
-                        </div>
-                        <button class="add-to-cart-btn btn btn-secondary w-full mt-4" data-id="${product.id}">Adicionar ao Carrinho</button>
-                    </div>
-                </div>
-            `;
-                }
-
-                // Renderiza estrelas de avaliação
-                function renderStars(rating, isInteractive = false) {
-                    let starsHtml = "";
-                    for (let i = 1; i <= 5; i++) {
-                        const starClass = i <= rating ? "text-accent" : "";
-                        const interactiveAttr = isInteractive
-                            ? `data-value="${i}"`
-                            : "";
-                        starsHtml += `<i class="fa-solid fa-star ${starClass}" ${interactiveAttr}></i>`;
-                    }
-                    return starsHtml;
-                }
-
-                // Renderiza a página de detalhes do produto
-                function renderProductDetail(productId) {
-                    const product = products.find((p) => p.id === productId);
-                    if (!product) return;
-
-                    const isWishlisted = wishlistItems.includes(product.id);
-                    const wishlistedClass = isWishlisted
-                        ? "text-primary"
-                        : "text-gray-400";
-
-                    const container = document.getElementById(
-                        "product-detail-page",
-                    );
-                    container.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <img src="${product.image}" alt="${product.name}" class="w-full rounded-lg shadow-lg">
-                    </div>
-                    <div>
-                        <h1 class="text-5xl font-teko text-secondary">${product.name}</h1>
-                        <div class="flex items-center my-4">
-                            <div class="rating mr-4">${renderStars(product.rating)}</div>
-                            <span class="text-gray-600">${product.reviews.length} avaliações</span>
-                        </div>
-                        <p class="text-3xl font-bold text-primary mb-4">R$ ${product.price.toFixed(2)}</p>
-                        <p class="text-gray-700 leading-relaxed mb-6">${product.description}</p>
-                        <div class="flex items-center space-x-4">
-                            <button class="add-to-cart-btn btn btn-primary flex-grow text-lg" data-id="${product.id}">Adicionar ao Carrinho</button>
-                            <button class="wishlist-toggle p-3 rounded-lg border-2 border-gray-300 hover:border-primary ${wishlistedClass}" data-id="${product.id}">
-                                <i class="fas fa-heart text-2xl"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Seção de Avaliações -->
-                <div class="mt-12 bg-white p-8 rounded-lg shadow-md">
-                    <h2 class="text-4xl font-teko text-secondary mb-6">Avaliações de Clientes</h2>
-                    <div id="reviews-list" class="space-y-6 mb-8">
-                        ${
-                            product.reviews
-                                .map(
-                                    (review) => `
-                            <div class="border-b pb-4">
-                                <div class="flex items-center mb-1">
-                                    <div class="rating mr-3">${renderStars(review.rating)}</div>
-                                    <p class="font-bold">${review.author}</p>
-                                </div>
-                                <p class="text-gray-600">${review.text}</p>
-                            </div>
-                        `,
-                                )
-                                .join("") ||
-                            "<p>Este produto ainda não tem avaliações. Seja o primeiro a avaliar!</p>"
-                        }
-                    </div>
-
-                    <!-- Formulário de Nova Avaliação -->
-                    <h3 class="text-3xl font-teko text-secondary mb-4">Deixe sua avaliação</h3>
-                    <form id="review-form" data-id="${product.id}">
-                        <div class="mb-4">
-                            <label for="author-name" class="block mb-1 font-semibold">Seu Nome</label>
-                            <input type="text" id="author-name" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block mb-1 font-semibold">Sua Nota</label>
-                            <div id="new-review-rating" class="rating text-3xl cursor-pointer">
-                                ${renderStars(0, true)}
-                            </div>
-                            <input type="hidden" id="rating-value" value="0" required>
-                        </div>
-                         <div class="mb-4">
-                            <label for="review-text" class="block mb-1 font-semibold">Seu Comentário</label>
-                            <textarea id="review-text" rows="4" class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
-                    </form>
-                </div>
-            `;
-                    addReviewFormListeners();
-                }
-
-                // Renderiza itens na wishlist
-                function renderWishlist() {
-                    const container = document.getElementById("wishlist-items");
-                    if (wishlistItems.length === 0) {
-                        container.innerHTML =
-                            '<p class="text-center text-gray-500">Sua lista de desejos está vazia.</p>';
-                        return;
-                    }
-                    container.innerHTML = wishlistItems
-                        .map((itemId) => {
-                            const product = products.find(
-                                (p) => p.id === itemId,
-                            );
-                            return `
-                    <div class="flex items-center bg-white p-4 rounded-lg shadow-md">
-                        <img src="${product.image}" alt="${product.name}" class="w-20 h-20 object-cover rounded mr-4">
-                        <div class="flex-grow">
-                            <h3 class="text-xl font-teko">${product.name}</h3>
-                            <p class="text-lg font-bold text-primary">R$ ${product.price.toFixed(2)}</p>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                             <button class="add-to-cart-btn btn btn-secondary btn-sm" data-id="${product.id}">Mover para Carrinho</button>
-                             <button class="remove-from-wishlist text-gray-400 hover:text-red-500" data-id="${product.id}"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
-                        })
-                        .join("");
-                }
-
-                // Renderiza itens no carrinho de compras
-                function renderCart() {
-                    const container = document.getElementById("cart-items");
-                    const totalEl = document.getElementById("cart-total");
-                    let total = 0;
-
-                    if (cartItems.length === 0) {
-                        container.innerHTML =
-                            '<p class="text-center text-gray-500">Seu carrinho está vazio.</p>';
-                        totalEl.textContent = "R$ 0,00";
-                        return;
-                    }
-
-                    container.innerHTML = cartItems
-                        .map((item) => {
-                            const product = products.find(
-                                (p) => p.id === item.id,
-                            );
-                            total += product.price * item.quantity;
-                            return `
-                    <div class="flex items-center">
-                        <img src="${product.image}" alt="${product.name}" class="w-16 h-16 object-cover rounded mr-4">
-                        <div class="flex-grow">
-                            <h4 class="font-bold">${product.name}</h4>
-                            <p>R$ ${product.price.toFixed(2)}</p>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="number" min="1" value="${item.quantity}" class="w-16 p-1 border rounded text-center cart-quantity-input" data-id="${product.id}">
-                        </div>
-                        <p class="w-24 text-right font-semibold">R$ ${(product.price * item.quantity).toFixed(2)}</p>
-                        <button class="remove-from-cart ml-4 text-gray-400 hover:text-red-500" data-id="${product.id}"><i class="fas fa-times-circle"></i></button>
-                    </div>
-                `;
-                        })
-                        .join("");
-
-                    totalEl.textContent = `R$ ${total.toFixed(2)}`;
-                }
-
-                // ======================================================
-                // LÓGICA DA APLICAÇÃO
-                // ======================================================
-
-                // Navegação entre páginas
-                function showPage(pageId) {
-                    pages.forEach((page) => {
-                        page.classList.remove("active-page");
-                    });
-                    const newPage = document.getElementById(pageId + "-page");
-                    if (newPage) {
-                        newPage.classList.add("active-page");
-                    }
-                    window.scrollTo(0, 0);
-                }
-
-                // Atualiza os contadores no cabeçalho
-                function updateCounters() {
-                    cartCountEl.textContent = cartItems.reduce(
-                        (sum, item) => sum + item.quantity,
-                        0,
-                    );
-                    wishlistCountEl.textContent = wishlistItems.length;
-                }
-
-                // Adiciona um item ao carrinho
-                function addToCart(productId) {
-                    const existingItem = cartItems.find(
-                        (item) => item.id === productId,
-                    );
-                    if (existingItem) {
-                        existingItem.quantity++;
-                    } else {
-                        cartItems.push({ id: productId, quantity: 1 });
-                    }
-                    updateCounters();
-                    showFeedback(
-                        "Produto adicionado!",
-                        "O item foi adicionado ao seu carrinho.",
-                    );
-                }
-
-                // Alterna item na wishlist
-                function toggleWishlist(productId) {
-                    const index = wishlistItems.indexOf(productId);
-                    if (index > -1) {
-                        wishlistItems.splice(index, 1);
-                        showFeedback(
-                            "Item removido",
-                            "O item foi removido da sua lista de desejos.",
-                        );
-                    } else {
-                        wishlistItems.push(productId);
-                        showFeedback(
-                            "Item adicionado!",
-                            "O item foi salvo na sua lista de desejos.",
-                        );
-                    }
-                    updateCounters();
-                    // Re-renderiza a view atual para atualizar o ícone de coração
-                    const activePageId =
-                        document.querySelector(".active-page").id;
-                    if (
-                        activePageId === "home-page" ||
-                        activePageId === "products-page"
-                    ) {
-                        populateProducts();
-                    } else if (activePageId === "product-detail-page") {
-                        renderProductDetail(productId);
-                    } else if (activePageId === "wishlist-page") {
-                        renderWishlist();
-                    }
-                }
-
-                // Modal de feedback
-                function showFeedback(title, message) {
-                    const modal = document.getElementById("feedback-modal");
-                    document.getElementById("modal-title").textContent = title;
-                    document.getElementById("modal-message").textContent =
-                        message;
-                    modal.classList.remove("hidden");
-                }
-
-                // ======================================================
-                // INICIALIZAÇÃO E EVENT LISTENERS
-                // ======================================================
-
-                // Preenche as seções de produtos
-                function populateProducts() {
-                    const featuredContainer =
-                        document.getElementById("featured-products");
-                    const recommendedContainer = document.getElementById(
-                        "recommended-products",
-                    );
-                    const productListContainer =
-                        document.getElementById("product-list");
-
-                    if (featuredContainer) {
-                        featuredContainer.innerHTML = products
-                            .slice(0, 4)
-                            .map(createProductCard)
-                            .join("");
-                    }
-                    if (recommendedContainer) {
-                        // Simulação simples de recomendação (pega os últimos 4)
-                        recommendedContainer.innerHTML = products
-                            .slice(-4)
-                            .map(createProductCard)
-                            .join("");
-                    }
-                    if (productListContainer) {
-                        productListContainer.innerHTML = products
-                            .map(createProductCard)
-                            .join("");
-                    }
-                }
-
-                // Listeners para o formulário de avaliação
-                function addReviewFormListeners() {
-                    const reviewForm = document.getElementById("review-form");
-                    if (reviewForm) {
-                        reviewForm.addEventListener("submit", (e) => {
-                            e.preventDefault();
-                            const productId = parseInt(reviewForm.dataset.id);
-                            const product = products.find(
-                                (p) => p.id === productId,
-                            );
-                            const author =
-                                document.getElementById("author-name").value;
-                            const text =
-                                document.getElementById("review-text").value;
-                            const rating = parseInt(
-                                document.getElementById("rating-value").value,
-                            );
-
-                            if (rating === 0) {
-                                alert("Por favor, selecione uma nota.");
-                                return;
-                            }
-
-                            product.reviews.push({ author, text, rating });
-
-                            // Recalcula a média de rating do produto
-                            const totalRating = product.reviews.reduce(
-                                (sum, r) => sum + r.rating,
-                                0,
-                            );
-                            product.rating =
-                                totalRating / product.reviews.length;
-
-                            showFeedback(
-                                "Obrigado!",
-                                "Sua avaliação foi enviada com sucesso.",
-                            );
-                            renderProductDetail(productId); // Re-renderiza a página para mostrar a nova avaliação
-                        });
-
-                        const stars = document.querySelectorAll(
-                            "#new-review-rating .fa-star",
-                        );
-                        stars.forEach((star) => {
-                            star.addEventListener("click", () => {
-                                const value = parseInt(star.dataset.value);
-                                document.getElementById("rating-value").value =
-                                    value;
-                                stars.forEach((s) => {
-                                    s.classList.toggle(
-                                        "text-accent",
-                                        parseInt(s.dataset.value) <= value,
-                                    );
-                                });
-                            });
-                        });
-                    }
-                }
-
-                // Delegação de eventos no corpo do documento
-                document.body.addEventListener("click", (e) => {
-                    // Botões de adicionar ao carrinho
-                    const addToCartBtn = e.target.closest(".add-to-cart-btn");
-                    if (addToCartBtn) {
-                        const productId = parseInt(addToCartBtn.dataset.id);
-                        addToCart(productId);
-
-                        // Se o item estava na wishlist, remove-o
-                        const wishlistIndex = wishlistItems.indexOf(productId);
-                        if (wishlistIndex > -1) {
-                            toggleWishlist(productId);
-                        }
-                    }
-
-                    // Links que abrem a página de detalhes do produto
-                    const productLink = e.target.closest(".product-link");
-                    if (productLink) {
-                        const productId = parseInt(productLink.dataset.id);
-                        renderProductDetail(productId);
-                        showPage("product-detail");
-                    }
-
-                    // Botões de wishlist
-                    const wishlistToggle = e.target.closest(".wishlist-toggle");
-                    if (wishlistToggle) {
-                        const productId = parseInt(wishlistToggle.dataset.id);
-                        toggleWishlist(productId);
-                    }
-
-                    // Botão de remover da wishlist
-                    const removeFromWishlistBtn = e.target.closest(
-                        ".remove-from-wishlist",
-                    );
-                    if (removeFromWishlistBtn) {
-                        const productId = parseInt(
-                            removeFromWishlistBtn.dataset.id,
-                        );
-                        toggleWishlist(productId); // A mesma função de toggle remove o item
-                    }
-
-                    // Botão de remover do carrinho
-                    const removeFromCartBtn =
-                        e.target.closest(".remove-from-cart");
-                    if (removeFromCartBtn) {
-                        const productId = parseInt(
-                            removeFromCartBtn.dataset.id,
-                        );
-                        cartItems = cartItems.filter(
-                            (item) => item.id !== productId,
-                        );
-                        renderCart();
-                        updateCounters();
-                    }
-                });
-
-                // Event listener para navegação principal
-                navLinks.forEach((link) => {
-                    link.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        const pageId = link.dataset.page;
-                        showPage(pageId);
-                        if (
-                            mobileMenu.classList.contains("md:hidden") === false
-                        ) {
-                            mobileMenu.classList.add("hidden");
-                        }
-                    });
-                });
-
-                // Event listener para abrir a wishlist
-                wishlistBtn.addEventListener("click", () => {
-                    renderWishlist();
-                    showPage("wishlist");
-                });
-
-                // Event listener para abrir o carrinho
-                cartBtn.addEventListener("click", () => {
-                    renderCart();
-                    showPage("checkout");
-                });
-
-                // Listener para o formulário de checkout
-                document
-                    .getElementById("checkout-form")
-                    .addEventListener("submit", (e) => {
-                        e.preventDefault();
-                        if (cartItems.length === 0) {
-                            showFeedback(
-                                "Carrinho Vazio",
-                                "Adicione itens ao carrinho antes de finalizar a compra.",
-                            );
-                            return;
-                        }
-                        showFeedback(
-                            "Pedido Confirmado!",
-                            "Obrigado por sua compra. Seu pedido foi processado com sucesso.",
-                        );
-                        cartItems = [];
-                        updateCounters();
-                        renderCart();
-                        e.target.reset();
-                        setTimeout(() => showPage("home"), 2000);
-                    });
-
-                // Listener para quantidade no carrinho
-                document
-                    .getElementById("cart-items")
-                    .addEventListener("change", (e) => {
-                        if (
-                            e.target.classList.contains("cart-quantity-input")
-                        ) {
-                            const productId = parseInt(e.target.dataset.id);
-                            const newQuantity = parseInt(e.target.value);
-                            const item = cartItems.find(
-                                (i) => i.id === productId,
-                            );
-                            if (item && newQuantity > 0) {
-                                item.quantity = newQuantity;
-                            } else {
-                                cartItems = cartItems.filter(
-                                    (i) => i.id !== productId,
-                                );
-                            }
-                            renderCart();
-                            updateCounters();
-                        }
-                    });
-
-                // Toggle do menu mobile
-                mobileMenuBtn.addEventListener("click", () => {
-                    mobileMenu.classList.toggle("hidden");
-                });
-
-                // Fechar modal
-                document
-                    .getElementById("modal-close-btn")
-                    .addEventListener("click", () => {
-                        document
-                            .getElementById("feedback-modal")
-                            .classList.add("hidden");
-                    });
-
-                // Inicialização
-                function init() {
-                    populateProducts();
-                    updateCounters();
-                    showPage("home");
-                }
-
-                init();
-            });
-        </script>
+        <!-- Link para o arquivo JavaScript externo -->
+        <script src="script.js" defer></script>
     </body>
 </html>

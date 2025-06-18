@@ -1,0 +1,21 @@
+{
+  "name": "india-oasis",
+  "version": "1.0.0",
+  "description": "India Oasis - Temperos e Sabores da Índia",
+  "main": "index.html",
+  "scripts": {
+    "build": "echo 'No build step required for static site'",
+    "start": "echo 'Static site - no server needed'"
+  },
+  "keywords": [
+    "spices",
+    "india",
+    "e-commerce",
+    "temperos",
+    "static-site"
+  ],
+  "author": "India Oasis",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
