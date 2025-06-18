@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Produtos - India Oasis - Temperos e Sabores da Índia</title>
+
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Fontes do Google -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;700&family=Lato:wght@300;400;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome (Ícones) -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+
+        <!-- Link para o arquivo CSS externo -->
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body class="text-gray-800">
+        <!-- ==== MENU LATERAL RETRÁTIL ==== -->
+        <div
+            id="menu-overlay"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 z-50"
+        ></div>
+        <aside
+            id="side-menu"
+            class="fixed top-0 left-0 w-72 h-full bg-white shadow-lg z-50 overflow-y-auto"
+        >
+            <div class="p-4">
+                <button
+                    id="close-menu-btn"
+                    class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-primary"
+                >
+                    &times;
+                </button>
+                <h2 class="text-3xl font-teko text-primary mb-6">Menu</h2>
+
+                <!-- Barra de Busca -->
+                <div class="relative mb-6">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Buscar produtos..."
+                        class="w-full pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <i
+                        class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    ></i>
+                </div>
+
+                <!-- Categorias -->
+                <h3 class="font-teko text-2xl text-secondary mb-2">
+                    Categorias
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="all"
+                            >Todos os Produtos</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Temperos"
+                            >Temperos e Masalas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Chás"
+                            >Chás e Infusões</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Grãos"
+                            >Grãos e Lentilhas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Acompanhamentos"
+                            >Acompanhamentos</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ==== CABEÇALHO ==== -->
+        <header class="bg-white shadow-md sticky top-0 z-40">
+            <nav
+                class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center"
+            >
+                <div class="flex items-center space-x-4">
+                    <button
+                        id="open-menu-btn"
+                        class="text-xl hover:text-primary"
+                    >
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a
+                        href="index.html"
+                        class="text-3xl font-teko text-primary"
+                        >India Oasis</a
+                    >
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a
+                        href="index.html"
+                        class="text-lg hover:text-primary"
+                        >Início</a
+                    >
+                    <a
+                        href="products.html"
+                        class="text-lg text-primary font-bold"
+                        >Produtos</a
+                    >
+                    <a
+                        href="contact.html"
+                        class="text-lg hover:text-primary"
+                        >Contato</a
+                    >
+                    <a
+                        href="about.html"
+                        class="text-lg hover:text-primary"
+                        >Sobre Nós</a
+                    >
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a
+                        href="wishlist.html"
+                        class="relative hover:text-primary"
+                    >
+                        <i class="fas fa-heart text-xl"></i>
+                        <span
+                            id="wishlist-count"
+                            class="absolute -top-2 -right-2 bg-accent text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                            >0</span
+                        >
+                    </a>
+                    <a href="cart.html" class="relative hover:text-primary">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span
+                            id="cart-count"
+                            class="absolute -top-2 -right-2 bg-accent text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                            >0</span
+                        >
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- ==== CONTEÚDO PRINCIPAL ==== -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex space-x-2 text-sm">
+                    <li><a href="index.html" class="text-primary hover:underline">Início</a></li>
+                    <li class="text-gray-500">/</li>
+                    <li class="text-gray-700">Produtos</li>
+                </ol>
+            </nav>
+
+            <!-- Título da Página -->
+            <h1 class="text-5xl font-teko text-center text-secondary mb-8">
+                Nossa Coleção
+            </h1>
+
+            <!-- Filtros -->
+            <div class="mb-8 bg-white p-4 rounded-lg shadow-md">
+                <div class="flex flex-wrap gap-4 items-center justify-between">
+                    <div class="flex flex-wrap gap-2">
+                        <button class="filter-btn btn btn-secondary active" data-category="all">
+                            Todos
+                        </button>
+                        <button class="filter-btn btn" data-category="Temperos">
+                            Temperos
+                        </button>
+                        <button class="filter-btn btn" data-category="Chás">
+                            Chás
+                        </button>
+                        <button class="filter-btn btn" data-category="Grãos">
+                            Grãos
+                        </button>
+                        <button class="filter-btn btn" data-category="Acompanhamentos">
+                            Acompanhamentos
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <label for="sort-select" class="text-sm font-semibold">Ordenar por:</label>
+                        <select id="sort-select" class="p-2 border rounded focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="name">Nome</option>
+                            <option value="price-low">Menor preço</option>
+                            <option value="price-high">Maior preço</option>
+                            <option value="rating">Avaliação</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Produtos -->
+            <div
+                id="product-list"
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            >
+                <!-- Cards de produtos serão inseridos aqui pelo JS -->
+            </div>
+
+            <!-- Mensagem de produtos não encontrados -->
+            <div id="no-products" class="hidden text-center py-12">
+                <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+                <h3 class="text-2xl font-teko text-gray-500 mb-2">Nenhum produto encontrado</h3>
+                <p class="text-gray-400">Tente ajustar os filtros ou termos de busca</p>
+            </div>
+        </main>
+
+        <!-- ==== RODAPÉ ==== -->
+        <footer class="bg-secondary text-white mt-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 text-center md:text-left gap-8"
+                >
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">India Oasis</h4>
+                        <p class="text-sm">
+                            Importando os sabores autênticos da Índia para sua
+                            casa.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Navegue</h4>
+                        <ul class="space-y-1">
+                            <li>
+                                <a
+                                    href="index.html"
+                                    class="hover:text-accent text-sm"
+                                    >Início</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html"
+                                    class="hover:text-accent text-sm"
+                                    >Produtos</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="contact.html"
+                                    class="hover:text-accent text-sm"
+                                    >Contato</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="about.html"
+                                    class="hover:text-accent text-sm"
+                                    >Sobre Nós</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Siga-nos</h4>
+                        <div
+                            class="flex justify-center md:justify-start space-x-4"
+                        >
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-instagram fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-facebook fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-pinterest fa-lg"></i
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="border-t border-teal-700 mt-8 pt-6 text-center text-sm"
+                >
+                    <p>
+                        &copy; 2024 - India Oasis - Todos os direitos
+                        reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- ==== MODAL DE FEEDBACK ==== -->
+        <div
+            id="feedback-modal"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        >
+            <div
+                class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto"
+            >
+                <h3 id="modal-title" class="text-2xl font-teko mb-4"></h3>
+                <p id="modal-message" class="mb-6"></p>
+                <button id="modal-close-btn" class="btn btn-primary">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <!-- Link para o arquivo JavaScript externo -->
+        <script src="script.js" defer></script>
+    </body>
+</html>

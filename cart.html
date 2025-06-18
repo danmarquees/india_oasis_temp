@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Carrinho de Compras - India Oasis - Temperos e Sabores da Índia</title>
+
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Fontes do Google -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;700&family=Lato:wght@300;400;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome (Ícones) -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+
+        <!-- Link para o arquivo CSS externo -->
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body class="text-gray-800">
+        <!-- ==== MENU LATERAL RETRÁTIL ==== -->
+        <div
+            id="menu-overlay"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 z-50"
+        ></div>
+        <aside
+            id="side-menu"
+            class="fixed top-0 left-0 w-72 h-full bg-white shadow-lg z-50 overflow-y-auto"
+        >
+            <div class="p-4">
+                <button
+                    id="close-menu-btn"
+                    class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-primary"
+                >
+                    &times;
+                </button>
+                <h2 class="text-3xl font-teko text-primary mb-6">Menu</h2>
+
+                <!-- Barra de Busca -->
+                <div class="relative mb-6">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Buscar produtos..."
+                        class="w-full pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <i
+                        class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    ></i>
+                </div>
+
+                <!-- Categorias -->
+                <h3 class="font-teko text-2xl text-secondary mb-2">
+                    Categorias
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="all"
+                            >Todos os Produtos</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Temperos"
+                            >Temperos e Masalas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Chás"
+                            >Chás e Infusões</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Grãos"
+                            >Grãos e Lentilhas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Acompanhamentos"
+                            >Acompanhamentos</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ==== CABEÇALHO ==== -->
+        <header class="bg-white shadow-md sticky top-0 z-40">
+            <nav
+                class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center"
+            >
+                <div class="flex items-center space-x-4">
+                    <button
+                        id="open-menu-btn"
+                        class="text-xl hover:text-primary"
+                    >
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a
+                        href="index.html"
+                        class="text-3xl font-teko text-primary"
+                        >India Oasis</a
+                    >
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a
+                        href="index.html"
+                        class="text-lg hover:text-primary"
+                        >Início</a
+                    >
+                    <a
+                        href="products.html"
+                        class="text-lg hover:text-primary"
+                        >Produtos</a
+                    >
+                    <a
+                        href="contact.html"
+                        class="text-lg hover:text-primary"
+                        >Contato</a
+                    >
+                    <a
+                        href="about.html"
+                        class="text-lg hover:text-primary"
+                        >Sobre Nós</a
+                    >
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a
+                        href="wishlist.html"
+                        class="relative hover:text-primary"
+                    >
+                        <i class="fas fa-heart text-xl"></i>
+                        <span
+                            id="wishlist-count"
+                            class="absolute -top-2 -right-2 bg-accent text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                            >0</span
+                        >
+                    </a>
+                    <a href="cart.html" class="relative text-primary">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span
+                            id="cart-count"
+                            class="absolute -top-2 -right-2 bg-accent text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                            >0</span
+                        >
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- ==== CONTEÚDO PRINCIPAL ==== -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex space-x-2 text-sm">
+                    <li><a href="index.html" class="text-primary hover:underline">Início</a></li>
+                    <li class="text-gray-500">/</li>
+                    <li class="text-gray-700">Carrinho de Compras</li>
+                </ol>
+            </nav>
+
+            <!-- Título da Página -->
+            <div class="text-center mb-8">
+                <h1 class="text-5xl font-teko text-secondary mb-4">
+                    <i class="fas fa-shopping-cart text-primary mr-3"></i>
+                    Carrinho de Compras
+                </h1>
+                <p class="text-gray-600">Revise seus itens antes de finalizar a compra</p>
+            </div>
+
+            <!-- Conteúdo do Carrinho -->
+            <div id="cart-container">
+                <!-- Quando há itens no carrinho -->
+                <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Itens do Carrinho -->
+                    <div class="lg:col-span-2">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-3xl font-teko text-secondary">Seus Itens</h2>
+                                <button id="clear-cart" class="text-red-500 hover:text-red-700 text-sm">
+                                    <i class="fas fa-trash mr-1"></i>
+                                    Limpar Carrinho
+                                </button>
+                            </div>
+                            <div id="cart-items" class="space-y-4">
+                                <!-- Itens do carrinho serão inseridos aqui pelo JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Cupom de Desconto -->
+                        <div class="mt-6 bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-teko text-secondary mb-4">Cupom de Desconto</h3>
+                            <div class="flex gap-3">
+                                <input
+                                    type="text"
+                                    id="coupon-input"
+                                    placeholder="Digite seu cupom"
+                                    class="flex-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                />
+                                <button id="apply-coupon" class="btn btn-secondary">
+                                    Aplicar
+                                </button>
+                            </div>
+                            <div id="coupon-message" class="mt-2 text-sm hidden"></div>
+                        </div>
+                    </div>
+
+                    <!-- Resumo do Pedido -->
+                    <div class="lg:col-span-1">
+                        <div class="bg-white p-6 rounded-lg shadow-md sticky top-24">
+                            <h2 class="text-3xl font-teko text-secondary mb-6">Resumo do Pedido</h2>
+
+                            <div class="space-y-3 mb-6">
+                                <div class="flex justify-between">
+                                    <span>Subtotal (<span id="item-count">0</span> itens):</span>
+                                    <span id="subtotal">R$ 0,00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Frete:</span>
+                                    <span id="shipping-cost">R$ 15,00</span>
+                                </div>
+                                <div id="discount-row" class="flex justify-between text-green-600 hidden">
+                                    <span>Desconto:</span>
+                                    <span id="discount-amount">- R$ 0,00</span>
+                                </div>
+                                <hr class="my-4">
+                                <div class="flex justify-between text-xl font-bold">
+                                    <span>Total:</span>
+                                    <span id="cart-total" class="text-primary">R$ 0,00</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-4 text-sm text-gray-600">
+                                <p class="mb-2">
+                                    <i class="fas fa-truck mr-2 text-primary"></i>
+                                    Frete grátis para pedidos acima de R$ 150
+                                </p>
+                                <p>
+                                    <i class="fas fa-clock mr-2 text-primary"></i>
+                                    Entrega em 5-7 dias úteis
+                                </p>
+                            </div>
+
+                            <button id="checkout-btn" class="btn btn-primary w-full text-lg mb-3">
+                                <i class="fas fa-credit-card mr-2"></i>
+                                Finalizar Compra
+                            </button>
+
+                            <button id="continue-shopping" class="btn w-full border border-gray-300 text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-arrow-left mr-2"></i>
+                                Continuar Comprando
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quando o carrinho está vazio -->
+                <div id="empty-cart" class="text-center py-16">
+                    <div class="mb-6">
+                        <i class="fas fa-shopping-cart text-6xl text-gray-300"></i>
+                    </div>
+                    <h2 class="text-3xl font-teko text-gray-500 mb-4">
+                        Seu carrinho está vazio
+                    </h2>
+                    <p class="text-gray-400 mb-8 max-w-md mx-auto">
+                        Explore nossos produtos e adicione seus temperos favoritos ao carrinho.
+                    </p>
+                    <a href="products.html" class="btn btn-primary text-lg">
+                        <i class="fas fa-shopping-bag mr-2"></i>
+                        Descobrir Produtos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Produtos Recomendados -->
+            <div id="recommended-section" class="mt-16">
+                <h2 class="text-3xl font-teko text-secondary text-center mb-8">
+                    Você Também Pode Gostar
+                </h2>
+                <div id="recommended-products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Produtos recomendados serão inseridos aqui pelo JavaScript -->
+                </div>
+            </div>
+        </main>
+
+        <!-- ==== MODAL DE CHECKOUT ==== -->
+        <div
+            id="checkout-modal"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+        >
+            <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-teko text-secondary">Finalizar Compra</h2>
+                        <button id="close-checkout" class="text-gray-500 hover:text-gray-700 text-2xl">
+                            &times;
+                        </button>
+                    </div>
+
+                    <form id="checkout-form">
+                        <!-- Informações de Entrega -->
+                        <div class="mb-6">
+                            <h3 class="text-xl font-teko text-secondary mb-4">Informações de Entrega</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="name" class="block mb-1 font-semibold">Nome Completo *</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label for="email" class="block mb-1 font-semibold">E-mail *</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label for="phone" class="block mb-1 font-semibold">Telefone *</label>
+                                    <input
+                                        type="tel"
+                                        id="phone"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label for="cep" class="block mb-1 font-semibold">CEP *</label>
+                                    <input
+                                        type="text"
+                                        id="cep"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    />
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label for="address" class="block mb-1 font-semibold">Endereço *</label>
+                                    <input
+                                        type="text"
+                                        id="address"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label for="city" class="block mb-1 font-semibold">Cidade *</label>
+                                    <input
+                                        type="text"
+                                        id="city"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label for="state" class="block mb-1 font-semibold">Estado *</label>
+                                    <select
+                                        id="state"
+                                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                                        required
+                                    >
+                                        <option value="">Selecione o estado</option>
+                                        <option value="SP">São Paulo</option>
+                                        <option value="RJ">Rio de Janeiro</option>
+                                        <option value="MG">Minas Gerais</option>
+                                        <!-- Adicionar mais estados conforme necessário -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Método de Pagamento -->
+                        <div class="mb-6">
+                            <h3 class="text-xl font-teko text-secondary mb-4">Método de Pagamento</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-yellow-50 cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="payment"
+                                        value="card"
+                                        class="form-radio text-primary"
+                                        checked
+                                    />
+                                    <div class="ml-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-credit-card mr-2 text-primary"></i>
+                                            <span class="font-semibold">Cartão de Crédito</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Visa, Mastercard, Elo</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-yellow-50 cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="payment"
+                                        value="pix"
+                                        class="form-radio text-primary"
+                                    />
+                                    <div class="ml-3">
+                                        <div class="flex items-center">
+                                            <i class="fa-brands fa-pix mr-2 text-primary"></i>
+                                            <span class="font-semibold">PIX</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Aprovação imediata</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-center p-4 border rounded-lg hover:bg-yellow-50 cursor-pointer">
+                                    <input
+                                        type="radio"
+                                        name="payment"
+                                        value="boleto"
+                                        class="form-radio text-primary"
+                                    />
+                                    <div class="ml-3">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-barcode mr-2 text-primary"></i>
+                                            <span class="font-semibold">Boleto Bancário</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Vencimento em 3 dias úteis</p>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Resumo Final -->
+                        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                            <h3 class="font-teko text-xl text-secondary mb-3">Resumo do Pedido</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span>Subtotal:</span>
+                                    <span id="modal-subtotal">R$ 0,00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Frete:</span>
+                                    <span id="modal-shipping">R$ 15,00</span>
+                                </div>
+                                <div id="modal-discount-row" class="flex justify-between text-green-600 hidden">
+                                    <span>Desconto:</span>
+                                    <span id="modal-discount">- R$ 0,00</span>
+                                </div>
+                                <hr class="my-2">
+                                <div class="flex justify-between text-lg font-bold">
+                                    <span>Total:</span>
+                                    <span id="modal-total" class="text-primary">R$ 0,00</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3">
+                            <button type="button" id="cancel-checkout" class="btn flex-1 border border-gray-300 text-gray-700 hover:bg-gray-100">
+                                Cancelar
+                            </button>
+                            <button type="submit" class="btn btn-primary flex-1 text-lg">
+                                <i class="fas fa-check mr-2"></i>
+                                Finalizar Pedido
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==== RODAPÉ ==== -->
+        <footer class="bg-secondary text-white mt-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 text-center md:text-left gap-8"
+                >
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">India Oasis</h4>
+                        <p class="text-sm">
+                            Importando os sabores autênticos da Índia para sua
+                            casa.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Navegue</h4>
+                        <ul class="space-y-1">
+                            <li>
+                                <a
+                                    href="index.html"
+                                    class="hover:text-accent text-sm"
+                                    >Início</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html"
+                                    class="hover:text-accent text-sm"
+                                    >Produtos</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="contact.html"
+                                    class="hover:text-accent text-sm"
+                                    >Contato</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="about.html"
+                                    class="hover:text-accent text-sm"
+                                    >Sobre Nós</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Siga-nos</h4>
+                        <div
+                            class="flex justify-center md:justify-start space-x-4"
+                        >
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-instagram fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-facebook fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-pinterest fa-lg"></i
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="border-t border-teal-700 mt-8 pt-6 text-center text-sm"
+                >
+                    <p>
+                        &copy; 2024 - India Oasis - Todos os direitos
+                        reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- ==== MODAL DE FEEDBACK ==== -->
+        <div
+            id="feedback-modal"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        >
+            <div
+                class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto"
+            >
+                <h3 id="modal-title" class="text-2xl font-teko mb-4"></h3>
+                <p id="modal-message" class="mb-6"></p>
+                <button id="modal-close-btn" class="btn btn-primary">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <!-- Link para o arquivo JavaScript externo -->
+        <script src="script.js" defer></script>
+    </body>
+</html>

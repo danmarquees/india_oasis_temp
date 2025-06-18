@@ -63,7 +63,13 @@ Após o deploy, seu site estará disponível em: `https://[nome-do-projeto].onre
 
 ```
 india_oasis_temp/
-├── index.html          # Página principal
+├── index.html          # Página inicial (Home)
+├── products.html       # Catálogo de produtos
+├── product-detail.html # Detalhes do produto
+├── wishlist.html       # Lista de desejos
+├── cart.html           # Carrinho de compras
+├── contact.html        # Página de contato
+├── about.html          # Sobre nós
 ├── styles.css          # Estilos customizados
 ├── script.js           # Lógica da aplicação
 ├── package.json        # Configuração do projeto
@@ -72,12 +78,22 @@ india_oasis_temp/
 └── README.md           # Documentação
 ```
 
-## 🎯 Funcionalidades Detalhadas
+### Funcionalidades Detalhadas
+
+### Estrutura Multi-Página
+- **Página Inicial (index.html)**: Hero section, produtos em destaque, avaliações
+- **Catálogo (products.html)**: Lista completa de produtos com filtros e busca
+- **Detalhes do Produto (product-detail.html)**: Informações detalhadas, avaliações e produtos relacionados
+- **Lista de Desejos (wishlist.html)**: Produtos salvos pelo usuário
+- **Carrinho (cart.html)**: Gestão de itens e checkout completo
+- **Contato (contact.html)**: Formulário de contato e informações da empresa
+- **Sobre Nós (about.html)**: História da empresa e valores
 
 ### Navegação
 - Menu lateral retrátil com categorias
 - Barra de busca integrada
-- Navegação por abas (Início, Produtos, Avaliações)
+- Estrutura multi-página com navegação fluida
+- Páginas independentes para cada seção principal
 
 ### Carrinho de Compras
 - Adicionar/remover produtos
@@ -114,7 +130,9 @@ O site é totalmente responsivo e otimizado para:
 Para personalizar o projeto:
 1. Modifique as cores no arquivo `styles.css`
 2. Adicione novos produtos no array `products` em `script.js`
-3. Ajuste o layout modificando as classes Tailwind no `index.html`
+3. Ajuste o layout modificando as classes Tailwind nos arquivos HTML
+4. Personalize cada página independentemente conforme necessário
+5. Adicione novas páginas seguindo a estrutura existente
 
 ## 📄 Licença
 

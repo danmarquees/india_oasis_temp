@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Contato - India Oasis - Temperos e Sabores da Índia</title>
+
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+
+        <!-- Fontes do Google -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;700&family=Lato:wght@300;400;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Font Awesome (Ícones) -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+
+        <!-- Link para o arquivo CSS externo -->
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body class="text-gray-800">
+        <!-- ==== MENU LATERAL RETRÁTIL ==== -->
+        <div
+            id="menu-overlay"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 z-50"
+        ></div>
+        <aside
+            id="side-menu"
+            class="fixed top-0 left-0 w-72 h-full bg-white shadow-lg z-50 overflow-y-auto"
+        >
+            <div class="p-4">
+                <button
+                    id="close-menu-btn"
+                    class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-primary"
+                >
+                    &times;
+                </button>
+                <h2 class="text-3xl font-teko text-primary mb-6">Menu</h2>
+
+                <!-- Barra de Busca -->
+                <div class="relative mb-6">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Buscar produtos..."
+                        class="w-full pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <i
+                        class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    ></i>
+                </div>
+
+                <!-- Categorias -->
+                <h3 class="font-teko text-2xl text-secondary mb-2">
+                    Categorias
+                </h3>
+                <ul class="space-y-2">
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="all"
+                            >Todos os Produtos</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Temperos"
+                            >Temperos e Masalas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Chás"
+                            >Chás e Infusões</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Grãos"
+                            >Grãos e Lentilhas</a
+                        >
+                    </li>
+                    <li>
+                        <a
+                            href="#"
+                            class="category-link block hover:text-primary"
+                            data-category="Acompanhamentos"
+                            >Acompanhamentos</a
+                        >
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- ==== CABEÇALHO ==== -->
+        <header class="bg-white shadow-md sticky top-0 z-40">
+            <nav
+                class="container mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center"
+            >
+                <div class="flex items-center space-x-4">
+                    <button
+                        id="open-menu-btn"
+                        class="text-xl hover:text-primary"
+                    >
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="text-3xl font-teko text-primary"
+                        >India Oasis</a
+                    >
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="index.html" class="text-lg hover:text-primary"
+                        >Início</a
+                    >
+                    <a href="products.html" class="text-lg hover:text-primary"
+                        >Produtos</a
+                    >
+                    <a
+                        href="contact.html"
+                        class="text-lg text-primary font-bold"
+                        >Contato</a
+                    >
+                    <a href="about.html" class="text-lg hover:text-primary"
+                        >Sobre Nós</a
+                    >
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="wishlist.html" class="relative hover:text-primary">
+                        <i class="fas fa-heart text-xl"></i>
+                        <span
+                            id="wishlist-count"
+                            class="absolute -top-2 -right-2 bg-accent text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                            >0</span
+                        >
+                    </a>
+                    <a href="cart.html" class="relative hover:text-primary">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span
+                            id="cart-count"
+                            class="absolute -top-2 -right-2 bg-accent text-black text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold"
+                            >0</span
+                        >
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <!-- ==== CONTEÚDO PRINCIPAL ==== -->
+        <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-6">
+                <ol class="flex space-x-2 text-sm">
+                    <li>
+                        <a
+                            href="index.html"
+                            class="text-primary hover:underline"
+                            >Início</a
+                        >
+                    </li>
+                    <li class="text-gray-500">/</li>
+                    <li class="text-gray-700">Contato</li>
+                </ol>
+            </nav>
+
+            <!-- Título da Página -->
+            <div class="text-center mb-12">
+                <h1 class="text-5xl font-teko text-secondary mb-4">
+                    <i class="fas fa-envelope text-primary mr-3"></i>
+                    Fale Conosco
+                </h1>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                    Tem alguma dúvida, sugestão ou gostaria de saber mais sobre
+                    nossos produtos? Preencha o formulário abaixo e nossa equipe
+                    entrará em contato em breve.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Formulário de Contato -->
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h2 class="text-3xl font-teko text-secondary mb-6">
+                        Envie sua Mensagem
+                    </h2>
+                    <form id="contact-form" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    for="contact-name"
+                                    class="block mb-2 font-semibold text-gray-700"
+                                >
+                                    Seu Nome *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="contact-name"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="contact-email"
+                                    class="block mb-2 font-semibold text-gray-700"
+                                >
+                                    Seu E-mail *
+                                </label>
+                                <input
+                                    type="email"
+                                    id="contact-email"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    for="contact-phone"
+                                    class="block mb-2 font-semibold text-gray-700"
+                                >
+                                    Telefone
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="contact-phone"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="contact-subject"
+                                    class="block mb-2 font-semibold text-gray-700"
+                                >
+                                    Assunto *
+                                </label>
+                                <select
+                                    id="contact-subject"
+                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                    required
+                                >
+                                    <option value="">
+                                        Selecione um assunto
+                                    </option>
+                                    <option value="duvida-produto">
+                                        Dúvida sobre produto
+                                    </option>
+                                    <option value="pedido">
+                                        Informações sobre pedido
+                                    </option>
+                                    <option value="sugestao">Sugestão</option>
+                                    <option value="reclamacao">
+                                        Reclamação
+                                    </option>
+                                    <option value="parceria">
+                                        Parceria comercial
+                                    </option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label
+                                for="contact-message"
+                                class="block mb-2 font-semibold text-gray-700"
+                            >
+                                Sua Mensagem *
+                            </label>
+                            <textarea
+                                id="contact-message"
+                                rows="6"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-vertical"
+                                placeholder="Conte-nos como podemos ajudá-lo..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input
+                                type="checkbox"
+                                id="newsletter"
+                                class="mr-3 text-primary focus:ring-2 focus:ring-primary"
+                            />
+                            <label
+                                for="newsletter"
+                                class="text-sm text-gray-600"
+                            >
+                                Quero receber novidades e ofertas especiais por
+                                e-mail
+                            </label>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-full text-lg py-3"
+                        >
+                            <i class="fas fa-paper-plane mr-2"></i>
+                            Enviar Mensagem
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Informações de Contato -->
+                <div class="space-y-8">
+                    <!-- Informações Gerais -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h2 class="text-3xl font-teko text-secondary mb-6">
+                            Outras Formas de Contato
+                        </h2>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="bg-primary text-white p-3 rounded-lg"
+                                >
+                                    <i class="fas fa-envelope text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="font-semibold text-gray-800 mb-1"
+                                    >
+                                        E-mail
+                                    </h3>
+                                    <p class="text-gray-600">
+                                        contato@indiaoasis.com.br
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        Respondemos em até 24 horas
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="bg-primary text-white p-3 rounded-lg"
+                                >
+                                    <i class="fas fa-phone text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="font-semibold text-gray-800 mb-1"
+                                    >
+                                        Telefone
+                                    </h3>
+                                    <p class="text-gray-600">
+                                        (11) 9 8765-4321
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        Segunda a sexta, das 9h às 18h
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="bg-primary text-white p-3 rounded-lg"
+                                >
+                                    <i class="fab fa-whatsapp text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="font-semibold text-gray-800 mb-1"
+                                    >
+                                        WhatsApp
+                                    </h3>
+                                    <p class="text-gray-600">
+                                        (11) 9 8765-4321
+                                    </p>
+                                    <p class="text-sm text-gray-500">
+                                        Atendimento rápido e direto
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="bg-primary text-white p-3 rounded-lg"
+                                >
+                                    <i
+                                        class="fas fa-map-marker-alt text-lg"
+                                    ></i>
+                                </div>
+                                <div>
+                                    <h3
+                                        class="font-semibold text-gray-800 mb-1"
+                                    >
+                                        Endereço
+                                    </h3>
+                                    <p class="text-gray-600">
+                                        Rua dos Temperos, 123<br />
+                                        Liberdade - São Paulo/SP<br />
+                                        CEP: 01234-567
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Horário de Funcionamento -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-teko text-secondary mb-4">
+                            Horário de Atendimento
+                        </h2>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600"
+                                    >Segunda a Sexta:</span
+                                >
+                                <span class="font-semibold">9h às 18h</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Sábado:</span>
+                                <span class="font-semibold">9h às 14h</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Domingo:</span>
+                                <span class="font-semibold text-red-500"
+                                    >Fechado</span
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Redes Sociais -->
+                    <div class="bg-white p-8 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-teko text-secondary mb-4">
+                            Nos Siga nas Redes Sociais
+                        </h2>
+                        <p class="text-gray-600 mb-6">
+                            Acompanhe nossas novidades, receitas e dicas de
+                            culinária indiana.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a
+                                href="#"
+                                class="bg-pink-500 text-white p-3 rounded-lg hover:bg-pink-600 transition-colors"
+                                title="Instagram"
+                            >
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition-colors"
+                                title="Facebook"
+                            >
+                                <i class="fab fa-facebook text-xl"></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition-colors"
+                                title="Pinterest"
+                            >
+                                <i class="fab fa-pinterest text-xl"></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors"
+                                title="YouTube"
+                            >
+                                <i class="fab fa-youtube text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Rápido -->
+            <div class="mt-16 bg-white p-8 rounded-lg shadow-md">
+                <h2 class="text-3xl font-teko text-secondary text-center mb-8">
+                    Perguntas Frequentes
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i
+                                class="fas fa-question-circle text-primary mr-2"
+                            ></i>
+                            Como faço um pedido?
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            Navegue pelos nossos produtos, adicione ao carrinho
+                            e finalize a compra com seus dados de entrega.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i
+                                class="fas fa-question-circle text-primary mr-2"
+                            ></i>
+                            Qual o prazo de entrega?
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            Entregamos em todo o Brasil em 5-7 dias úteis. Frete
+                            grátis para pedidos acima de R$ 150.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i
+                                class="fas fa-question-circle text-primary mr-2"
+                            ></i>
+                            Os produtos são frescos?
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            Sim! Importamos diretamente da Índia e garantimos a
+                            qualidade e frescor de todos os temperos.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800 mb-2">
+                            <i
+                                class="fas fa-question-circle text-primary mr-2"
+                            ></i>
+                            Posso trocar um produto?
+                        </h3>
+                        <p class="text-gray-600 text-sm">
+                            Aceitamos trocas em até 30 dias desde que o produto
+                            esteja lacrado e em perfeito estado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ==== RODAPÉ ==== -->
+        <footer class="bg-secondary text-white mt-12">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div
+                    class="grid grid-cols-1 md:grid-cols-3 text-center md:text-left gap-8"
+                >
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">India Oasis</h4>
+                        <p class="text-sm">
+                            Importando os sabores autênticos da Índia para sua
+                            casa.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Navegue</h4>
+                        <ul class="space-y-1">
+                            <li>
+                                <a
+                                    href="index.html"
+                                    class="hover:text-accent text-sm"
+                                    >Início</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="products.html"
+                                    class="hover:text-accent text-sm"
+                                    >Produtos</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="contact.html"
+                                    class="hover:text-accent text-sm"
+                                    >Contato</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="about.html"
+                                    class="hover:text-accent text-sm"
+                                    >Sobre Nós</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-teko text-2xl mb-2">Siga-nos</h4>
+                        <div
+                            class="flex justify-center md:justify-start space-x-4"
+                        >
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-instagram fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-facebook fa-lg"></i
+                            ></a>
+                            <a href="#" class="hover:text-accent"
+                                ><i class="fab fa-pinterest fa-lg"></i
+                            ></a>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="border-t border-teal-700 mt-8 pt-6 text-center text-sm"
+                >
+                    <p>
+                        &copy; 2024 - India Oasis - Todos os direitos
+                        reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- ==== MODAL DE FEEDBACK ==== -->
+        <div
+            id="feedback-modal"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+        >
+            <div
+                class="bg-white p-8 rounded-lg shadow-xl text-center max-w-sm mx-auto"
+            >
+                <h3 id="modal-title" class="text-2xl font-teko mb-4"></h3>
+                <p id="modal-message" class="mb-6"></p>
+                <button id="modal-close-btn" class="btn btn-primary">
+                    Fechar
+                </button>
+            </div>
+        </div>
+
+        <!-- Link para o arquivo JavaScript externo -->
+        <script src="script.js" defer></script>
+    </body>
+</html>
