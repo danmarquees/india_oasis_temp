@@ -24,9 +24,50 @@
 
         <!-- Link para o arquivo CSS externo -->
         <link rel="stylesheet" href="styles.css" />
+
+        <style>
+            /* Animações específicas para subcategorias */
+            .subcategory-list {
+                max-height: 0;
+                overflow: hidden;
+                transition:
+                    max-height 0.3s ease-out,
+                    opacity 0.3s ease-out;
+                opacity: 0;
+            }
+
+            .subcategory-list.show {
+                max-height: 200px;
+                opacity: 1;
+            }
+
+            .category-toggle.active .fa-chevron-down {
+                transform: rotate(180deg);
+            }
+
+            /* Efeito hover melhorado */
+            .category-link:hover,
+            .category-toggle:hover {
+                transform: translateX(4px);
+            }
+
+            .subcategory-link:hover {
+                transform: translateX(2px);
+            }
+        </style>
     </head>
     <body class="text-gray-800">
-        <!-- ==== MENU LATERAL RETRÁTIL ==== -->
+        <!--
+        ==== MENU LATERAL RETRÁTIL ====
+        Funcionalidades implementadas:
+        - Menu lateral deslizante com overlay
+        - Barra de busca em tempo real
+        - Categorias principais com subcategorias expandíveis
+        - Contador de resultados de busca
+        - Botão para limpar filtros
+        - Links de acesso rápido com mini contadores
+        - Animações suaves e responsivo
+        -->
         <div
             id="menu-overlay"
             class="hidden fixed inset-0 bg-black bg-opacity-50 z-50"
@@ -44,7 +85,7 @@
                 </button>
                 <h2 class="text-3xl font-teko text-primary mb-6">Menu</h2>
 
-                <!-- Barra de Busca -->
+                <!-- Barra de Busca com Contador de Resultados -->
                 <div class="relative mb-6">
                     <input
                         type="text"
@@ -55,18 +96,35 @@
                     <i
                         class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                     ></i>
+                    <!-- Contador de Resultados -->
+                    <div
+                        id="search-results-counter"
+                        class="hidden mt-2 text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-full"
+                    >
+                        <i class="fas fa-info-circle mr-1 text-primary"></i>
+                        <span id="results-count">0</span> resultados encontrados
+                    </div>
                 </div>
 
-                <!-- Categorias -->
-                <h3 class="font-teko text-2xl text-secondary mb-4">
-                    <i class="fas fa-tags mr-2 text-primary"></i>
-                    Categorias
-                </h3>
-                <ul class="space-y-3">
+                <!-- Categorias com Subcategorias Expandíveis -->
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-teko text-2xl text-secondary">
+                        <i class="fas fa-tags mr-2 text-primary"></i>
+                        Categorias
+                    </h3>
+                    <button
+                        id="reset-filters-btn"
+                        class="hidden text-xs text-primary hover:text-secondary transition-colors px-2 py-1 rounded-md border border-primary hover:bg-primary hover:text-white"
+                    >
+                        <i class="fas fa-times mr-1"></i>
+                        Limpar
+                    </button>
+                </div>
+                <ul class="space-y-2">
                     <li>
                         <a
                             href="products.html"
-                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-colors"
+                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-all duration-200 hover:shadow-md"
                             data-category="all"
                         >
                             <i
@@ -75,46 +133,183 @@
                             <span>Todos os Produtos</span>
                         </a>
                     </li>
-                    <li>
-                        <a
-                            href="products.html?category=temperos"
-                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-colors"
-                            data-category="Temperos"
-                        >
-                            <i
-                                class="fas fa-pepper-hot mr-3 text-orange-600 w-5"
-                            ></i>
-                            <span>Temperos e Masalas</span>
-                        </a>
+
+                    <!-- Temperos e Masalas com Subcategorias -->
+                    <li class="category-section">
+                        <div class="category-parent">
+                            <button
+                                class="category-toggle w-full flex items-center justify-between p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-all duration-200 hover:shadow-md"
+                                data-category="Temperos"
+                            >
+                                <div class="flex items-center">
+                                    <i
+                                        class="fas fa-pepper-hot mr-3 text-orange-600 w-5"
+                                    ></i>
+                                    <span>Temperos e Masalas</span>
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down transform transition-transform duration-200"
+                                ></i>
+                            </button>
+                            <ul
+                                class="subcategory-list hidden ml-8 mt-2 space-y-1"
+                            >
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=masalas"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-orange-400 text-xs"
+                                        ></i>
+                                        <span>Masalas Tradicionais</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=especiarias"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-orange-400 text-xs"
+                                        ></i>
+                                        <span>Especiarias Puras</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=misturas"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-orange-400 text-xs"
+                                        ></i>
+                                        <span>Misturas Especiais</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                    <li>
-                        <a
-                            href="products.html?category=chas"
-                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-colors"
-                            data-category="Chás"
-                        >
-                            <i
-                                class="fas fa-mug-hot mr-3 text-green-600 w-5"
-                            ></i>
-                            <span>Chás e Infusões</span>
-                        </a>
+
+                    <!-- Chás e Infusões com Subcategorias -->
+                    <li class="category-section">
+                        <div class="category-parent">
+                            <button
+                                class="category-toggle w-full flex items-center justify-between p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-all duration-200 hover:shadow-md"
+                                data-category="Chás"
+                            >
+                                <div class="flex items-center">
+                                    <i
+                                        class="fas fa-mug-hot mr-3 text-green-600 w-5"
+                                    ></i>
+                                    <span>Chás e Infusões</span>
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down transform transition-transform duration-200"
+                                ></i>
+                            </button>
+                            <ul
+                                class="subcategory-list hidden ml-8 mt-2 space-y-1"
+                            >
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=chai"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-green-400 text-xs"
+                                        ></i>
+                                        <span>Masala Chai</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=cha-verde"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-green-400 text-xs"
+                                        ></i>
+                                        <span>Chás Verdes</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=infusoes"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-green-400 text-xs"
+                                        ></i>
+                                        <span>Infusões Ayurvédicas</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
-                    <li>
-                        <a
-                            href="products.html?category=graos"
-                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-colors"
-                            data-category="Grãos"
-                        >
-                            <i
-                                class="fas fa-seedling mr-3 text-yellow-600 w-5"
-                            ></i>
-                            <span>Grãos e Lentilhas</span>
-                        </a>
+
+                    <!-- Grãos e Lentilhas com Subcategorias -->
+                    <li class="category-section">
+                        <div class="category-parent">
+                            <button
+                                class="category-toggle w-full flex items-center justify-between p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-all duration-200 hover:shadow-md"
+                                data-category="Grãos"
+                            >
+                                <div class="flex items-center">
+                                    <i
+                                        class="fas fa-seedling mr-3 text-yellow-600 w-5"
+                                    ></i>
+                                    <span>Grãos e Lentilhas</span>
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down transform transition-transform duration-200"
+                                ></i>
+                            </button>
+                            <ul
+                                class="subcategory-list hidden ml-8 mt-2 space-y-1"
+                            >
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=lentilhas"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-yellow-400 text-xs"
+                                        ></i>
+                                        <span>Lentilhas (Dal)</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=arroz"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-yellow-400 text-xs"
+                                        ></i>
+                                        <span>Arroz Basmati</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="products.html?subcategory=graos-especiais"
+                                        class="subcategory-link flex items-center p-2 rounded-md hover:bg-yellow-50 hover:text-primary transition-colors text-sm"
+                                    >
+                                        <i
+                                            class="fas fa-circle mr-2 text-yellow-400 text-xs"
+                                        ></i>
+                                        <span>Grãos Especiais</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
+
+                    <!-- Acompanhamentos -->
                     <li>
                         <a
                             href="products.html?category=acompanhamentos"
-                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-colors"
+                            class="category-link flex items-center p-3 rounded-lg hover:bg-yellow-50 hover:text-primary transition-all duration-200 hover:shadow-md"
                             data-category="Acompanhamentos"
                         >
                             <i
@@ -125,12 +320,26 @@
                     </li>
                 </ul>
 
-                <!-- Links Rápidos -->
+                <!-- Links Rápidos com Mini Contadores -->
                 <div class="mt-8 pt-6 border-t border-gray-200">
-                    <h3 class="font-teko text-xl text-secondary mb-3">
-                        <i class="fas fa-star mr-2 text-accent"></i>
-                        Acesso Rápido
-                    </h3>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-teko text-xl text-secondary">
+                            <i class="fas fa-star mr-2 text-accent"></i>
+                            Acesso Rápido
+                        </h3>
+                        <div class="flex space-x-1">
+                            <span
+                                class="menu-counter bg-accent text-black text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold"
+                                id="wishlist-mini-count"
+                                >0</span
+                            >
+                            <span
+                                class="menu-counter bg-accent text-black text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold"
+                                id="cart-mini-count"
+                                >0</span
+                            >
+                        </div>
+                    </div>
                     <ul class="space-y-2">
                         <li>
                             <a
@@ -1068,6 +1277,9 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sistema de Notificações Toast -->
+        <script src="toast-system.js"></script>
 
         <!-- Link para o arquivo JavaScript externo -->
         <script src="script.js" defer></script>

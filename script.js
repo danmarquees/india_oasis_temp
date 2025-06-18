@@ -1,5 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ======================================================
+  // INICIALIZAÇÃO DO SISTEMA DE TOAST
+  // ======================================================
+
+  // Aguardar carregamento do sistema de toast
+  if (typeof window.toastSystem === 'undefined') {
+    console.log('🍞 Carregando sistema de notificações...');
+  }
+
+  // ======================================================
   // BANCO DE DADOS SIMULADO (MOCK DATA)
   // ======================================================
   const products = [
@@ -388,22 +397,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Atualiza os contadores no cabeçalho
   function updateCounters() {
-    cartCountEl.textContent = cartItems.reduce(
-      (sum, item) => sum + item.quantity,
-      0,
-    );
-    wishlistCountEl.textContent = wishlistItems.length;
+    const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const wishlistCount = wishlistItems.length;
+
+    cartCountEl.textContent = cartCount;
+    wishlistCountEl.textContent = wishlistCount;
+
+    // Atualizar mini contadores no menu lateral
+    const wishlistMiniCount = document.getElementById("wishlist-mini-count");
+    const cartMiniCount = document.getElementById("cart-mini-count");
+
+    if (wishlistMiniCount) {
+      wishlistMiniCount.textContent = wishlistCount;
+    }
+    if (cartMiniCount) {
+      cartMiniCount.textContent = cartCount;
+    }
   }
 
   // Adiciona um item ao carrinho
   function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
     const existingItem = cartItems.find((item) => item.id === productId);
+
     if (existingItem) {
-      existingItem.quantity++;
+      existingItem.quantity += 1;
+      // Notificação de quantidade atualizada
+      if (window.cartNotifications) {
+        window.cartNotifications.quantityUpdated(product?.name || 'Produto', existingItem.quantity);
+      }
     } else {
       cartItems.push({ id: productId, quantity: 1 });
+      // Notificação de item adicionado
+      if (window.cartNotifications) {
+        window.cartNotifications.itemAdded(product?.name || 'Produto');
+      }
     }
+
     updateCounters();
+    showFeedback("Produto adicionado ao carrinho!");
+
+    // Verificar se desbloqueou frete grátis
+    checkFreeShipping();
+  }
     showFeedback(
       "Produto adicionado!",
       "O item foi adicionado ao seu carrinho.",
@@ -628,14 +664,57 @@ document.addEventListener("DOMContentLoaded", () => {
   closeMenuBtn.addEventListener("click", toggleMenu);
   menuOverlay.addEventListener("click", toggleMenu);
 
+  // Listeners para subcategorias
+  document.querySelectorAll(".category-toggle").forEach((toggle) => {
+    toggle.addEventListener("click", function () {
+      const subcategoryList =
+        this.parentElement.querySelector(".subcategory-list");
+      const isOpen = subcategoryList.classList.contains("show");
+
+      // Fecha todas as outras subcategorias
+      document.querySelectorAll(".subcategory-list").forEach((list) => {
+        list.classList.remove("show");
+        list.classList.add("hidden");
+      });
+      document.querySelectorAll(".category-toggle").forEach((btn) => {
+        btn.classList.remove("active");
+      });
+
+      // Alterna a subcategoria atual
+      if (!isOpen) {
+        subcategoryList.classList.remove("hidden");
+        subcategoryList.classList.add("show");
+        this.classList.add("active");
+      }
+    });
+  });
+
   // Listener da busca
   document.getElementById("search-input").addEventListener("keyup", (e) => {
-    const searchTerm = e.target.value;
-    showPage("products");
-    document.getElementById("product-list").innerHTML = products
-      .map(createProductCard)
-      .join(""); // Reset view before filtering
-    populateProducts("all", searchTerm);
+    const searchTerm = e.target.value.toLowerCase();
+
+    // Se há termo de busca, filtra produtos
+    if (searchTerm) {
+      showPage("products");
+      document.getElementById("product-list").innerHTML = products
+        .map(createProductCard)
+        .join(""); // Reset view before filtering
+      populateProducts("all", searchTerm);
+
+      // Filtrar categorias visíveis baseado na busca
+      filterCategoriesInMenu(searchTerm);
+
+      // Mostrar contador de resultados
+      updateSearchCounter(searchTerm);
+
+      // Mostrar botão de limpar filtros
+      document.getElementById("reset-filters-btn").classList.remove("hidden");
+    } else {
+      // Se não há busca, mostra todas as categorias
+      showAllCategoriesInMenu();
+      hideSearchCounter();
+      document.getElementById("reset-filters-btn").classList.add("hidden");
+    }
   });
 
   // Listener das categorias
@@ -713,16 +792,273 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Inicialização
   function init() {
+    console.log("Inicializando India Oasis...");
+
     const productListContainer = document.getElementById("product-list");
     if (productListContainer) {
       productListContainer.innerHTML = products.map(createProductCard).join("");
     }
+
     populateProducts();
     renderFeaturedReviews();
     updateCounters();
     showPage("home");
     setInterval(nextSlide, 5000); // Avança o slide a cada 5 segundos
+
+    console.log("Menu lateral inicializado com", products.length, "produtos");
+    console.log(
+      "Funcionalidades ativas: busca, categorias expandíveis, contadores",
+    );
+  }
+
+  // Função para filtrar categorias no menu baseado na busca
+  function filterCategoriesInMenu(searchTerm) {
+    const categories = document.querySelectorAll(
+      ".category-section, .category-link",
+    );
+
+    let visibleCategories = 0;
+    categories.forEach((category) => {
+      const categoryText = category.textContent.toLowerCase();
+      const categoryItem = category.closest("li");
+
+      if (categoryText.includes(searchTerm)) {
+        categoryItem.style.display = "block";
+        categoryItem.style.opacity = "1";
+        visibleCategories++;
+      } else {
+        categoryItem.style.display = "none";
+        categoryItem.style.opacity = "0.5";
+      }
+    });
+
+    console.log(
+      `Filtro aplicado: ${visibleCategories} categorias visíveis para "${searchTerm}"`,
+    );
+  }
+
+  // Função para mostrar todas as categorias
+  function showAllCategoriesInMenu() {
+    const categories = document.querySelectorAll(
+      ".category-section, .category-link",
+    );
+
+    categories.forEach((category) => {
+      const categoryItem = category.closest("li");
+      categoryItem.style.display = "block";
+      categoryItem.style.opacity = "1";
+    });
+  }
+
+  // Função para destacar categoria ativa
+  function highlightActiveCategory(categoryName) {
+    // Remove destaque anterior
+    document.querySelectorAll(".category-active").forEach((el) => {
+      el.classList.remove("category-active");
+    });
+
+    // Adiciona destaque à categoria atual
+    const activeCategory = document.querySelector(
+      `[data-category="${categoryName}"]`,
+    );
+    if (activeCategory) {
+      activeCategory.classList.add("category-active");
+    }
+  }
+
+  // Função para atualizar contador de busca
+  function updateSearchCounter(searchTerm) {
+    const filteredProducts = products.filter((p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+
+    const counter = document.getElementById("search-results-counter");
+    const countSpan = document.getElementById("results-count");
+
+    countSpan.textContent = filteredProducts.length;
+    counter.classList.remove("hidden");
+  }
+
+  // Função para esconder contador de busca
+  function hideSearchCounter() {
+    const counter = document.getElementById("search-results-counter");
+    counter.classList.add("hidden");
+  }
+
+  // Listener para botão de limpar filtros
+  const resetBtn = document.getElementById("reset-filters-btn");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      // Limpar campo de busca
+      const searchInput = document.getElementById("search-input");
+      if (searchInput) {
+        searchInput.value = "";
+      }
+
+      // Mostrar todas as categorias
+      showAllCategoriesInMenu();
+
+      // Esconder contador e botão
+      hideSearchCounter();
+      resetBtn.classList.add("hidden");
+
+      // Voltar para página inicial
+      showPage("home");
+
+      console.log("Filtros limpos, voltando à visualização padrão");
+
+      // Notificação de filtros limpos
+      if (window.actionFeedback) {
+        window.actionFeedback.copied('Filtros limpos');
+      }
+    });
+  }
+
+  // ======================================================
+  // FUNCIONALIDADES AVANÇADAS
+  // ======================================================
+
+  // Verificar se desbloqueou frete grátis
+  function checkFreeShipping() {
+    const total = cartItems.reduce((sum, item) => {
+      const product = products.find(p => p.id === item.id);
+      return sum + (product ? product.price * item.quantity : 0);
+    }, 0);
+
+    const freeShippingThreshold = 150;
+
+    if (total >= freeShippingThreshold && window.cartNotifications) {
+      // Verificar se é a primeira vez que atinge o limite
+      const wasUnderThreshold = localStorage.getItem('wasUnderFreeShipping') === 'true';
+      if (wasUnderThreshold) {
+        window.cartNotifications.freeShippingUnlocked();
+        localStorage.removeItem('wasUnderFreeShipping');
+      }
+    } else {
+      localStorage.setItem('wasUnderFreeShipping', 'true');
+    }
+  }
+
+  // Atualizar ícones de wishlist
+  function updateWishlistIcons() {
+    document.querySelectorAll('[data-action="add-to-wishlist"]').forEach(btn => {
+      const productId = parseInt(btn.getAttribute('data-product-id'));
+      const isInWishlist = wishlistItems.some(item => item.id === productId);
+
+      const icon = btn.querySelector('i');
+      if (icon) {
+        if (isInWishlist) {
+          icon.className = 'fas fa-heart text-red-500';
+          btn.setAttribute('title', 'Remover dos favoritos');
+        } else {
+          icon.className = 'far fa-heart';
+          btn.setAttribute('title', 'Adicionar aos favoritos');
+        }
+      }
+    });
+  }
+
+  // Simulação de alertas de preço
+  function simulatePriceAlert() {
+    if (wishlistItems.length > 0 && window.wishlistNotifications) {
+      const randomItem = wishlistItems[Math.floor(Math.random() * wishlistItems.length)];
+      const product = products.find(p => p.id === randomItem.id);
+
+      if (product) {
+        const oldPrice = product.price;
+        const newPrice = product.price * 0.8; // 20% de desconto
+
+        setTimeout(() => {
+          window.wishlistNotifications.priceDropAlert(product.name, oldPrice, newPrice);
+        }, 10000); // Simular após 10 segundos
+      }
+    }
+  }
+
+  // Detectar erros de formulário
+  function setupFormValidation() {
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', (e) => {
+        const requiredFields = form.querySelectorAll('[required]');
+        let hasErrors = false;
+
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            hasErrors = true;
+            field.classList.add('border-red-500');
+          } else {
+            field.classList.remove('border-red-500');
+          }
+        });
+
+        if (hasErrors) {
+          e.preventDefault();
+          if (window.actionFeedback) {
+            window.actionFeedback.formError('Por favor, preencha todos os campos obrigatórios');
+          }
+        }
+      });
+    });
+  }
+
+  // Inicializar funcionalidades avançadas
+  function initAdvancedFeatures() {
+    updateWishlistIcons();
+    setupFormValidation();
+
+    // Simular alerta de preço para demonstração
+    if (window.location.pathname.includes('wishlist.html')) {
+      simulatePriceAlert();
+    }
+
+    // Configurar indicador de progresso de scroll
+    setupScrollProgress();
+
+    // Configurar botão voltar ao topo
+    setupBackToTop();
+  }
+
+  // Indicador de progresso de scroll
+  function setupScrollProgress() {
+    const progressBar = document.createElement('div');
+    progressBar.className = 'scroll-indicator';
+    progressBar.innerHTML = '<div class="scroll-progress"></div>';
+    document.body.appendChild(progressBar);
+
+    const progress = progressBar.querySelector('.scroll-progress');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+
+      progress.style.width = scrollPercent + '%';
+    });
+  }
+
+  // Botão voltar ao topo
+  function setupBackToTop() {
+    const backToTop = document.createElement('button');
+    backToTop.className = 'back-to-top';
+    backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    backToTop.title = 'Voltar ao topo';
+    document.body.appendChild(backToTop);
+
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 
   init();
+
+  // Inicializar funcionalidades avançadas após carregamento
+  setTimeout(initAdvancedFeatures, 500);
 });

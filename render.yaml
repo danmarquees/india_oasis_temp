@@ -1,7 +1,6 @@
 services:
   - type: web
     name: india-oasis
-    env: static
     buildCommand: echo "No build step required"
     staticPublishPath: .
     routes:
