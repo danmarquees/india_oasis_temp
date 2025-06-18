@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================================================
 
   // Aguardar carregamento do sistema de toast
-  if (typeof window.toastSystem === 'undefined') {
-    console.log('🍞 Carregando sistema de notificações...');
+  if (typeof window.toastSystem === "undefined") {
+    console.log("🍞 Carregando sistema de notificações...");
   }
 
   // ======================================================
@@ -158,15 +158,35 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeMenuBtn = document.getElementById("close-menu-btn");
 
   // Debug: Verificar se elementos foram encontrados
-  console.log('🔍 Verificando elementos do menu:');
-  console.log('- sideMenu:', !!sideMenu, sideMenu);
-  console.log('- menuOverlay:', !!menuOverlay, menuOverlay);
-  console.log('- openMenuBtn:', !!openMenuBtn, openMenuBtn);
-  console.log('- closeMenuBtn:', !!closeMenuBtn, closeMenuBtn);
+  console.log("🔍 Verificando elementos do menu:");
+  console.log("- sideMenu:", !!sideMenu, sideMenu);
+  console.log("- menuOverlay:", !!menuOverlay, menuOverlay);
+  console.log("- openMenuBtn:", !!openMenuBtn, openMenuBtn);
+  console.log("- closeMenuBtn:", !!closeMenuBtn, closeMenuBtn);
 
-  // Carrossel
+  // Carrossel - Variáveis e Configuração
   const carouselItems = document.querySelectorAll(".carousel-item");
+  const carouselIndicators = document.querySelectorAll(".carousel-indicator");
+  const carouselProgress = document.getElementById("carousel-progress");
+  const carouselContainer = document.getElementById("carousel-container");
+  const nextBtn = document.getElementById("next-slide");
+  const prevBtn = document.getElementById("prev-slide");
   const totalSlides = carouselItems.length;
+  let carouselInterval;
+  let isCarouselPaused = false;
+  let touchStartX = 0;
+  let touchEndX = 0;
+  let carouselDebounceTimer = null;
+  let isCarouselTransitioning = false;
+
+  // Debug do carrossel
+  console.log("🎠 Carrossel Debug:");
+  console.log("- carouselItems:", carouselItems.length);
+  console.log("- carouselIndicators:", carouselIndicators.length);
+  console.log("- carouselProgress:", !!carouselProgress);
+  console.log("- carouselContainer:", !!carouselContainer);
+  console.log("- nextBtn:", !!nextBtn);
+  console.log("- prevBtn:", !!prevBtn);
 
   // ======================================================
   // FUNÇÕES DE RENDERIZAÇÃO
@@ -424,20 +444,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Adiciona um item ao carrinho
   function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
+    const product = products.find((p) => p.id === productId);
     const existingItem = cartItems.find((item) => item.id === productId);
 
     if (existingItem) {
       existingItem.quantity += 1;
       // Notificação de quantidade atualizada
       if (window.cartNotifications) {
-        window.cartNotifications.quantityUpdated(product?.name || 'Produto', existingItem.quantity);
+        window.cartNotifications.quantityUpdated(
+          product?.name || "Produto",
+          existingItem.quantity,
+        );
       }
     } else {
       cartItems.push({ id: productId, quantity: 1 });
       // Notificação de item adicionado
       if (window.cartNotifications) {
-        window.cartNotifications.itemAdded(product?.name || 'Produto');
+        window.cartNotifications.itemAdded(product?.name || "Produto");
       }
     }
 
@@ -446,11 +469,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Verificar se desbloqueou frete grátis
     checkFreeShipping();
-  }
-    showFeedback(
-      "Produto adicionado!",
-      "O item foi adicionado ao seu carrinho.",
-    );
   }
 
   // Alterna item na wishlist
@@ -491,15 +509,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Controle do menu lateral
   function toggleMenu() {
-    console.log('Toggle menu chamado');
-    console.log('sideMenu exists:', !!sideMenu);
-    console.log('menuOverlay exists:', !!menuOverlay);
+    console.log("Toggle menu chamado");
+    console.log("sideMenu exists:", !!sideMenu);
+    console.log("menuOverlay exists:", !!menuOverlay);
 
     if (sideMenu && menuOverlay) {
-      console.log('Menu state before toggle:', sideMenu.classList.contains("open"));
+      console.log(
+        "Menu state before toggle:",
+        sideMenu.classList.contains("open"),
+      );
       sideMenu.classList.toggle("open");
       menuOverlay.classList.toggle("hidden");
-      console.log('Menu state after toggle:', sideMenu.classList.contains("open"));
+      console.log(
+        "Menu state after toggle:",
+        sideMenu.classList.contains("open"),
+      );
 
       // Adicionar/remover classe no body para prevenir scroll
       document.body.classList.toggle("menu-open");
@@ -509,9 +533,9 @@ document.addEventListener("DOMContentLoaded", () => {
         closeAllSubcategories();
       }
     } else {
-      console.error('Elementos do menu não encontrados!');
-      console.log('sideMenu:', sideMenu);
-      console.log('menuOverlay:', menuOverlay);
+      console.error("Elementos do menu não encontrados!");
+      console.log("sideMenu:", sideMenu);
+      console.log("menuOverlay:", menuOverlay);
     }
   }
 
@@ -526,16 +550,248 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Controle do Carrossel
+  // Controle do Carrossel Aprimorado
   function updateCarousel() {
-    carouselItems.forEach((item, index) => {
-      item.classList.toggle("active", index === currentSlide);
-    });
+    try {
+      if (!carouselItems.length || isCarouselTransitioning) {
+        if (isCarouselTransitioning) {
+          console.warn("⚠️ Carrossel em transição, ignorando atualização");
+        } else {
+          console.warn("⚠️ Nenhum slide encontrado no carrossel");
+        }
+        return;
+      }
+
+      isCarouselTransitioning = true;
+
+      // Validar currentSlide
+      const oldSlide = currentSlide;
+      currentSlide = Math.max(0, Math.min(currentSlide, totalSlides - 1));
+
+      if (oldSlide !== currentSlide) {
+        console.warn(`🎠 Slide corrigido de ${oldSlide} para ${currentSlide}`);
+      }
+
+      // Use requestAnimationFrame para performance
+      requestAnimationFrame(() => {
+        try {
+          // Atualizar slides
+          carouselItems.forEach((item, index) => {
+            if (!item) {
+              console.error(`❌ Slide ${index} é null ou undefined`);
+              return;
+            }
+
+            const isActive = index === currentSlide;
+            const isPrev = index < currentSlide;
+
+            item.classList.toggle("active", isActive);
+            item.classList.toggle("prev", isPrev && !isActive);
+
+            // Otimização: só remover classes se necessário
+            if (!isActive && !isPrev) {
+              item.classList.remove("active", "prev");
+            }
+          });
+
+          // Atualizar indicadores
+          if (carouselIndicators.length) {
+            carouselIndicators.forEach((indicator, index) => {
+              if (!indicator) {
+                console.error(`❌ Indicador ${index} é null ou undefined`);
+                return;
+              }
+              indicator.classList.toggle("active", index === currentSlide);
+            });
+          }
+
+          // Resetar e iniciar barra de progresso
+          updateProgressBar();
+
+          // Liberar transição após 600ms (duração da animação CSS)
+          setTimeout(() => {
+            isCarouselTransitioning = false;
+          }, 600);
+
+          console.log(`🎠 Slide atual: ${currentSlide + 1}/${totalSlides}`);
+        } catch (animationError) {
+          console.error("❌ Erro na animação do carrossel:", animationError);
+          isCarouselTransitioning = false;
+        }
+      });
+    } catch (error) {
+      console.error("❌ Erro crítico no updateCarousel:", error);
+      isCarouselTransitioning = false;
+    }
+  }
+
+  function updateProgressBar() {
+    try {
+      if (!carouselProgress) {
+        console.warn("⚠️ Elemento carouselProgress não encontrado");
+        return;
+      }
+
+      carouselProgress.style.width = "0%";
+      carouselProgress.style.animation = "none";
+
+      // Force reflow de forma otimizada
+      void carouselProgress.offsetHeight;
+
+      setTimeout(() => {
+        if (!isCarouselPaused && carouselProgress && !document.hidden) {
+          carouselProgress.style.animation = "progressBar 5s linear";
+          console.log("📊 Barra de progresso atualizada");
+        }
+      }, 50);
+    } catch (error) {
+      console.error("❌ Erro ao atualizar barra de progresso:", error);
+    }
+  }
+
+  function debounceCarouselAction(action, delay = 300) {
+    if (carouselDebounceTimer) {
+      clearTimeout(carouselDebounceTimer);
+    }
+
+    carouselDebounceTimer = setTimeout(() => {
+      action();
+      carouselDebounceTimer = null;
+    }, delay);
   }
 
   function nextSlide() {
-    currentSlide = (currentSlide + 1) % totalSlides;
-    updateCarousel();
+    try {
+      if (totalSlides === 0 || isCarouselTransitioning) {
+        console.warn(
+          "⚠️ NextSlide bloqueado - slides:",
+          totalSlides,
+          "transitioning:",
+          isCarouselTransitioning,
+        );
+        return;
+      }
+      const oldSlide = currentSlide;
+      currentSlide = (currentSlide + 1) % totalSlides;
+      console.log(`➡️ Próximo slide: ${oldSlide} → ${currentSlide}`);
+      updateCarousel();
+    } catch (error) {
+      console.error("❌ Erro em nextSlide:", error);
+    }
+  }
+
+  function prevSlide() {
+    try {
+      if (totalSlides === 0 || isCarouselTransitioning) {
+        console.warn(
+          "⚠️ PrevSlide bloqueado - slides:",
+          totalSlides,
+          "transitioning:",
+          isCarouselTransitioning,
+        );
+        return;
+      }
+      const oldSlide = currentSlide;
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      console.log(`⬅️ Slide anterior: ${oldSlide} → ${currentSlide}`);
+      updateCarousel();
+    } catch (error) {
+      console.error("❌ Erro em prevSlide:", error);
+    }
+  }
+
+  function goToSlide(slideIndex) {
+    try {
+      if (
+        totalSlides === 0 ||
+        slideIndex < 0 ||
+        slideIndex >= totalSlides ||
+        isCarouselTransitioning
+      ) {
+        console.warn("⚠️ GoToSlide bloqueado:", {
+          slideIndex,
+          totalSlides,
+          isCarouselTransitioning,
+        });
+        return;
+      }
+      if (slideIndex === currentSlide) {
+        console.log("ℹ️ Já no slide", slideIndex);
+        return; // Não fazer nada se já estiver no slide
+      }
+      const oldSlide = currentSlide;
+      currentSlide = slideIndex;
+      console.log(`🎯 Ir para slide: ${oldSlide} → ${currentSlide}`);
+      updateCarousel();
+    } catch (error) {
+      console.error("❌ Erro em goToSlide:", error);
+    }
+  }
+
+  function startCarouselAutoplay() {
+    try {
+      if (totalSlides <= 1) {
+        console.warn(
+          "⚠️ Auto-play não iniciado - slides insuficientes:",
+          totalSlides,
+        );
+        return;
+      }
+
+      stopCarouselAutoplay(); // Limpar interval anterior
+      carouselInterval = setInterval(() => {
+        try {
+          if (!isCarouselPaused && !document.hidden && document.hasFocus()) {
+            nextSlide();
+          }
+        } catch (error) {
+          console.error("❌ Erro no auto-play interval:", error);
+          stopCarouselAutoplay();
+        }
+      }, 5000);
+      console.log("▶️ Auto-play do carrossel iniciado");
+    } catch (error) {
+      console.error("❌ Erro ao iniciar auto-play:", error);
+    }
+  }
+
+  function stopCarouselAutoplay() {
+    try {
+      if (carouselInterval) {
+        clearInterval(carouselInterval);
+        carouselInterval = null;
+        console.log("⏹️ Auto-play do carrossel parado");
+      }
+    } catch (error) {
+      console.error("❌ Erro ao parar auto-play:", error);
+    }
+  }
+
+  function pauseCarousel() {
+    isCarouselPaused = true;
+    if (carouselProgress) {
+      carouselProgress.style.animationPlayState = "paused";
+    }
+    console.log("⏸️ Carrossel pausado");
+  }
+
+  function resumeCarousel() {
+    isCarouselPaused = false;
+    if (carouselProgress && !document.hidden) {
+      carouselProgress.style.animationPlayState = "running";
+    }
+    console.log("▶️ Carrossel retomado");
+  }
+
+  function isCarouselInView() {
+    if (!carouselContainer) return false;
+    const rect = carouselContainer.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
+  }
+
+  function resetCarouselAutoplay() {
+    stopCarouselAutoplay();
+    startCarouselAutoplay();
   }
 
   // ======================================================
@@ -698,40 +954,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Listeners do menu lateral
-  console.log('Configurando listeners do menu...');
-  console.log('openMenuBtn exists:', !!openMenuBtn);
+  console.log("Configurando listeners do menu...");
+  console.log("openMenuBtn exists:", !!openMenuBtn);
 
   if (openMenuBtn) {
-    console.log('Adicionando listener ao botão de abrir menu');
+    console.log("Adicionando listener ao botão de abrir menu");
     openMenuBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log('Botão abrir menu clicado');
+      console.log("Botão abrir menu clicado");
       toggleMenu();
     });
   } else {
-    console.error('Botão de abrir menu não encontrado!');
+    console.error("Botão de abrir menu não encontrado!");
   }
 
   if (closeMenuBtn) {
-    console.log('Adicionando listener ao botão de fechar menu');
+    console.log("Adicionando listener ao botão de fechar menu");
     closeMenuBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log('Botão fechar menu clicado');
+      console.log("Botão fechar menu clicado");
       toggleMenu();
     });
   } else {
-    console.error('Botão de fechar menu não encontrado!');
+    console.error("Botão de fechar menu não encontrado!");
   }
 
   if (menuOverlay) {
-    console.log('Adicionando listener ao overlay');
+    console.log("Adicionando listener ao overlay");
     menuOverlay.addEventListener("click", (e) => {
       e.preventDefault();
-      console.log('Overlay clicado');
+      console.log("Overlay clicado");
       toggleMenu();
     });
   } else {
-    console.error('Menu overlay não encontrado!');
+    console.error("Menu overlay não encontrado!");
   }
 
   // Fechar menu com tecla ESC
@@ -745,9 +1001,10 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".category-toggle").forEach((toggle) => {
     toggle.addEventListener("click", function (e) {
       e.preventDefault();
-      console.log('Subcategoria clicada:', this.textContent);
+      console.log("Subcategoria clicada:", this.textContent);
 
-      const subcategoryList = this.parentElement.querySelector(".subcategory-list");
+      const subcategoryList =
+        this.parentElement.querySelector(".subcategory-list");
       if (!subcategoryList) return;
 
       const isOpen = subcategoryList.classList.contains("show");
@@ -872,12 +1129,281 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("feedback-modal").classList.add("hidden");
   });
 
-  // Listeners do Carrossel
-  document.getElementById("next-slide").addEventListener("click", nextSlide);
-  document.getElementById("prev-slide").addEventListener("click", () => {
-    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-    updateCarousel();
-  });
+  // ======================================================
+  // CARROSSEL - EVENT LISTENERS
+  // ======================================================
+
+  function setupCarouselListeners() {
+    try {
+      // Botões de navegação com debounce
+      if (nextBtn) {
+        nextBtn.addEventListener("click", (e) => {
+          try {
+            e.preventDefault();
+            console.log("🖱️ Botão next clicado");
+            debounceCarouselAction(() => {
+              nextSlide();
+              resetCarouselAutoplay();
+            }, 200);
+          } catch (error) {
+            console.error("❌ Erro no click do nextBtn:", error);
+          }
+        });
+      } else {
+        console.warn("⚠️ Botão next não encontrado");
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener("click", (e) => {
+          try {
+            e.preventDefault();
+            console.log("🖱️ Botão prev clicado");
+            debounceCarouselAction(() => {
+              prevSlide();
+              resetCarouselAutoplay();
+            }, 200);
+          } catch (error) {
+            console.error("❌ Erro no click do prevBtn:", error);
+          }
+        });
+      } else {
+        console.warn("⚠️ Botão prev não encontrado");
+      }
+
+      // Indicadores com debounce
+      if (carouselIndicators.length > 0) {
+        carouselIndicators.forEach((indicator, index) => {
+          if (!indicator) {
+            console.error(`❌ Indicador ${index} é null`);
+            return;
+          }
+          indicator.addEventListener("click", (e) => {
+            try {
+              e.preventDefault();
+              console.log(`🖱️ Indicador ${index} clicado`);
+              debounceCarouselAction(() => {
+                goToSlide(index);
+                resetCarouselAutoplay();
+              }, 150);
+            } catch (error) {
+              console.error(`❌ Erro no click do indicador ${index}:`, error);
+            }
+          });
+        });
+      } else {
+        console.warn("⚠️ Nenhum indicador encontrado");
+      }
+
+      // Hover para pausar/retomar
+      if (carouselContainer) {
+        carouselContainer.addEventListener("mouseenter", () => {
+          try {
+            console.log("🖱️ Mouse enter - pausando carrossel");
+            pauseCarousel();
+          } catch (error) {
+            console.error("❌ Erro no mouseenter:", error);
+          }
+        });
+
+        carouselContainer.addEventListener("mouseleave", () => {
+          try {
+            console.log("🖱️ Mouse leave - retomando carrossel");
+            resumeCarousel();
+          } catch (error) {
+            console.error("❌ Erro no mouseleave:", error);
+          }
+        });
+
+        // Suporte para toque
+        carouselContainer.addEventListener(
+          "touchstart",
+          (e) => {
+            try {
+              if (e.changedTouches && e.changedTouches[0]) {
+                touchStartX = e.changedTouches[0].screenX;
+                console.log("👆 Touch start:", touchStartX);
+              }
+            } catch (error) {
+              console.error("❌ Erro no touchstart:", error);
+            }
+          },
+          { passive: true },
+        );
+
+        carouselContainer.addEventListener(
+          "touchend",
+          (e) => {
+            try {
+              if (e.changedTouches && e.changedTouches[0]) {
+                touchEndX = e.changedTouches[0].screenX;
+                console.log("👆 Touch end:", touchEndX);
+                handleSwipe();
+              }
+            } catch (error) {
+              console.error("❌ Erro no touchend:", error);
+            }
+          },
+          { passive: true },
+        );
+      } else {
+        console.warn(
+          "⚠️ Container do carrossel não encontrado para eventos de hover/touch",
+        );
+      }
+
+      // Suporte para teclado (apenas quando carrossel está visível)
+      document.addEventListener("keydown", (e) => {
+        try {
+          if (!carouselContainer) return;
+
+          const isCarouselVisible = carouselContainer.offsetParent !== null;
+          if (!isCarouselVisible) return;
+
+          if (e.key === "ArrowLeft") {
+            e.preventDefault();
+            console.log("⌨️ Seta esquerda pressionada");
+            debounceCarouselAction(() => {
+              prevSlide();
+              resetCarouselAutoplay();
+            }, 100);
+          } else if (e.key === "ArrowRight") {
+            e.preventDefault();
+            console.log("⌨️ Seta direita pressionada");
+            debounceCarouselAction(() => {
+              nextSlide();
+              resetCarouselAutoplay();
+            }, 100);
+          }
+        } catch (error) {
+          console.error("❌ Erro no keydown:", error);
+        }
+      });
+
+      // Pausar quando a página não está visível
+      document.addEventListener("visibilitychange", () => {
+        try {
+          if (document.hidden) {
+            console.log("👁️ Página oculta - pausando carrossel");
+            pauseCarousel();
+            stopCarouselAutoplay();
+          } else if (isCarouselInView()) {
+            console.log("👁️ Página visível - retomando carrossel");
+            resumeCarousel();
+            startCarouselAutoplay();
+          }
+        } catch (error) {
+          console.error("❌ Erro no visibilitychange:", error);
+        }
+      });
+
+      // Pausar quando a janela perde o foco
+      window.addEventListener("blur", () => {
+        try {
+          console.log("🎯 Janela perdeu foco - pausando carrossel");
+          pauseCarousel();
+        } catch (error) {
+          console.error("❌ Erro no blur:", error);
+        }
+      });
+
+      window.addEventListener("focus", () => {
+        try {
+          if (!document.hidden && isCarouselInView()) {
+            console.log("🎯 Janela ganhou foco - retomando carrossel");
+            resumeCarousel();
+          }
+        } catch (error) {
+          console.error("❌ Erro no focus:", error);
+        }
+      });
+
+      // Pausar carrossel quando não está visível (Intersection Observer)
+      if ("IntersectionObserver" in window && carouselContainer) {
+        try {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              try {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    console.log("👀 Carrossel visível - iniciando auto-play");
+                    if (!isCarouselPaused && !document.hidden) {
+                      startCarouselAutoplay();
+                    }
+                  } else {
+                    console.log("👀 Carrossel invisível - parando auto-play");
+                    stopCarouselAutoplay();
+                  }
+                });
+              } catch (error) {
+                console.error(
+                  "❌ Erro no IntersectionObserver callback:",
+                  error,
+                );
+              }
+            },
+            { threshold: 0.5 },
+          );
+
+          observer.observe(carouselContainer);
+          console.log("👀 IntersectionObserver configurado");
+        } catch (error) {
+          console.error("❌ Erro ao configurar IntersectionObserver:", error);
+        }
+      } else {
+        console.warn(
+          "⚠️ IntersectionObserver não suportado ou container não encontrado",
+        );
+      }
+
+      console.log("🎛️ Listeners do carrossel configurados com sucesso");
+    } catch (error) {
+      console.error(
+        "❌ Erro crítico ao configurar listeners do carrossel:",
+        error,
+      );
+    }
+  }
+
+  function handleSwipe() {
+    try {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      const absDiff = Math.abs(diff);
+
+      console.log(
+        `👆 Swipe detectado: ${touchStartX} → ${touchEndX} (diff: ${diff})`,
+      );
+
+      if (absDiff > swipeThreshold) {
+        // Prevenir swipes muito rápidos ou acidentais
+        if (absDiff > 300) {
+          console.warn("⚠️ Swipe muito rápido, ignorando");
+          return;
+        }
+
+        debounceCarouselAction(() => {
+          if (diff > 0) {
+            // Swipe left - next slide
+            nextSlide();
+            console.log("👆 Swipe esquerdo - próximo slide");
+          } else {
+            // Swipe right - previous slide
+            prevSlide();
+            console.log("👆 Swipe direito - slide anterior");
+          }
+          resetCarouselAutoplay();
+        }, 100);
+      } else {
+        console.log("👆 Swipe insuficiente, ignorando");
+      }
+    } catch (error) {
+      console.error("❌ Erro no handleSwipe:", error);
+    } finally {
+      // Reset touch positions
+      touchStartX = 0;
+      touchEndX = 0;
+    }
+  }
 
   // Inicialização
   function init() {
@@ -888,7 +1414,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sideMenu: !!sideMenu,
       menuOverlay: !!menuOverlay,
       openMenuBtn: !!openMenuBtn,
-      closeMenuBtn: !!closeMenuBtn
+      closeMenuBtn: !!closeMenuBtn,
     });
 
     const productListContainer = document.getElementById("product-list");
@@ -900,7 +1426,26 @@ document.addEventListener("DOMContentLoaded", () => {
     renderFeaturedReviews();
     updateCounters();
     showPage("home");
-    setInterval(nextSlide, 5000); // Avança o slide a cada 5 segundos
+
+    // Inicializar carrossel aprimorado
+    try {
+      if (totalSlides > 0) {
+        console.log(`🎠 Inicializando carrossel com ${totalSlides} slides`);
+        setupCarouselListeners();
+        updateCarousel();
+
+        // Delay para garantir que o DOM esteja completamente carregado
+        setTimeout(() => {
+          startCarouselAutoplay();
+        }, 100);
+
+        console.log("🎠 Carrossel inicializado com sucesso");
+      } else {
+        console.warn("⚠️ Carrossel não inicializado - nenhum slide encontrado");
+      }
+    } catch (error) {
+      console.error("❌ Erro crítico na inicialização do carrossel:", error);
+    }
 
     // Adicionar funcionalidade de demonstração
     setupDemoFeatures();
@@ -915,12 +1460,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupDemoFeatures() {
     // Adicionar indicador visual para o botão do menu
     if (openMenuBtn) {
-      openMenuBtn.style.position = 'relative';
+      openMenuBtn.style.position = "relative";
 
       // Criar tooltip
-      const tooltip = document.createElement('div');
-      tooltip.className = 'demo-tooltip';
-      tooltip.textContent = 'Clique para abrir o menu';
+      const tooltip = document.createElement("div");
+      tooltip.className = "demo-tooltip";
+      tooltip.textContent = "Clique para abrir o menu";
       tooltip.style.cssText = `
         position: absolute;
         top: 100%;
@@ -941,19 +1486,19 @@ document.addEventListener("DOMContentLoaded", () => {
       openMenuBtn.appendChild(tooltip);
 
       // Mostrar tooltip no hover
-      openMenuBtn.addEventListener('mouseenter', () => {
-        tooltip.style.opacity = '1';
+      openMenuBtn.addEventListener("mouseenter", () => {
+        tooltip.style.opacity = "1";
       });
 
-      openMenuBtn.addEventListener('mouseleave', () => {
-        tooltip.style.opacity = '0';
+      openMenuBtn.addEventListener("mouseleave", () => {
+        tooltip.style.opacity = "0";
       });
     }
 
     // Adicionar animação de chamada de atenção
     setTimeout(() => {
       if (openMenuBtn) {
-        openMenuBtn.style.animation = 'pulse 2s infinite';
+        openMenuBtn.style.animation = "pulse 2s infinite";
       }
     }, 2000);
   }
@@ -1056,7 +1601,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Notificação de filtros limpos
       if (window.actionFeedback) {
-        window.actionFeedback.copied('Filtros limpos');
+        window.actionFeedback.copied("Filtros limpos");
       }
     });
   }
@@ -1068,7 +1613,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Verificar se desbloqueou frete grátis
   function checkFreeShipping() {
     const total = cartItems.reduce((sum, item) => {
-      const product = products.find(p => p.id === item.id);
+      const product = products.find((p) => p.id === item.id);
       return sum + (product ? product.price * item.quantity : 0);
     }, 0);
 
@@ -1076,47 +1621,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (total >= freeShippingThreshold && window.cartNotifications) {
       // Verificar se é a primeira vez que atinge o limite
-      const wasUnderThreshold = localStorage.getItem('wasUnderFreeShipping') === 'true';
+      const wasUnderThreshold =
+        localStorage.getItem("wasUnderFreeShipping") === "true";
       if (wasUnderThreshold) {
         window.cartNotifications.freeShippingUnlocked();
-        localStorage.removeItem('wasUnderFreeShipping');
+        localStorage.removeItem("wasUnderFreeShipping");
       }
     } else {
-      localStorage.setItem('wasUnderFreeShipping', 'true');
+      localStorage.setItem("wasUnderFreeShipping", "true");
     }
   }
 
   // Atualizar ícones de wishlist
   function updateWishlistIcons() {
-    document.querySelectorAll('[data-action="add-to-wishlist"]').forEach(btn => {
-      const productId = parseInt(btn.getAttribute('data-product-id'));
-      const isInWishlist = wishlistItems.some(item => item.id === productId);
+    document
+      .querySelectorAll('[data-action="add-to-wishlist"]')
+      .forEach((btn) => {
+        const productId = parseInt(btn.getAttribute("data-product-id"));
+        const isInWishlist = wishlistItems.some(
+          (item) => item.id === productId,
+        );
 
-      const icon = btn.querySelector('i');
-      if (icon) {
-        if (isInWishlist) {
-          icon.className = 'fas fa-heart text-red-500';
-          btn.setAttribute('title', 'Remover dos favoritos');
-        } else {
-          icon.className = 'far fa-heart';
-          btn.setAttribute('title', 'Adicionar aos favoritos');
+        const icon = btn.querySelector("i");
+        if (icon) {
+          if (isInWishlist) {
+            icon.className = "fas fa-heart text-red-500";
+            btn.setAttribute("title", "Remover dos favoritos");
+          } else {
+            icon.className = "far fa-heart";
+            btn.setAttribute("title", "Adicionar aos favoritos");
+          }
         }
-      }
-    });
+      });
   }
 
   // Simulação de alertas de preço
   function simulatePriceAlert() {
     if (wishlistItems.length > 0 && window.wishlistNotifications) {
-      const randomItem = wishlistItems[Math.floor(Math.random() * wishlistItems.length)];
-      const product = products.find(p => p.id === randomItem.id);
+      const randomItem =
+        wishlistItems[Math.floor(Math.random() * wishlistItems.length)];
+      const product = products.find((p) => p.id === randomItem.id);
 
       if (product) {
         const oldPrice = product.price;
         const newPrice = product.price * 0.8; // 20% de desconto
 
         setTimeout(() => {
-          window.wishlistNotifications.priceDropAlert(product.name, oldPrice, newPrice);
+          window.wishlistNotifications.priceDropAlert(
+            product.name,
+            oldPrice,
+            newPrice,
+          );
         }, 10000); // Simular após 10 segundos
       }
     }
@@ -1124,24 +1679,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Detectar erros de formulário
   function setupFormValidation() {
-    document.querySelectorAll('form').forEach(form => {
-      form.addEventListener('submit', (e) => {
-        const requiredFields = form.querySelectorAll('[required]');
+    document.querySelectorAll("form").forEach((form) => {
+      form.addEventListener("submit", (e) => {
+        const requiredFields = form.querySelectorAll("[required]");
         let hasErrors = false;
 
-        requiredFields.forEach(field => {
+        requiredFields.forEach((field) => {
           if (!field.value.trim()) {
             hasErrors = true;
-            field.classList.add('border-red-500');
+            field.classList.add("border-red-500");
           } else {
-            field.classList.remove('border-red-500');
+            field.classList.remove("border-red-500");
           }
         });
 
         if (hasErrors) {
           e.preventDefault();
           if (window.actionFeedback) {
-            window.actionFeedback.formError('Por favor, preencha todos os campos obrigatórios');
+            window.actionFeedback.formError(
+              "Por favor, preencha todos os campos obrigatórios",
+            );
           }
         }
       });
@@ -1154,7 +1711,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupFormValidation();
 
     // Simular alerta de preço para demonstração
-    if (window.location.pathname.includes('wishlist.html')) {
+    if (window.location.pathname.includes("wishlist.html")) {
       simulatePriceAlert();
     }
 
@@ -1167,40 +1724,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Indicador de progresso de scroll
   function setupScrollProgress() {
-    const progressBar = document.createElement('div');
-    progressBar.className = 'scroll-indicator';
+    const progressBar = document.createElement("div");
+    progressBar.className = "scroll-indicator";
     progressBar.innerHTML = '<div class="scroll-progress"></div>';
     document.body.appendChild(progressBar);
 
-    const progress = progressBar.querySelector('.scroll-progress');
+    const progress = progressBar.querySelector(".scroll-progress");
 
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       const scrollTop = window.pageYOffset;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;
 
-      progress.style.width = scrollPercent + '%';
+      progress.style.width = scrollPercent + "%";
     });
   }
 
   // Botão voltar ao topo
   function setupBackToTop() {
-    const backToTop = document.createElement('button');
-    backToTop.className = 'back-to-top';
+    const backToTop = document.createElement("button");
+    backToTop.className = "back-to-top";
     backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    backToTop.title = 'Voltar ao topo';
+    backToTop.title = "Voltar ao topo";
     document.body.appendChild(backToTop);
 
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
       if (window.pageYOffset > 300) {
-        backToTop.classList.add('show');
+        backToTop.classList.add("show");
       } else {
-        backToTop.classList.remove('show');
+        backToTop.classList.remove("show");
       }
     });
 
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    backToTop.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 

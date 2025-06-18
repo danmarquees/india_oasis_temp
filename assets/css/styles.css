@@ -11,6 +11,37 @@
     --cumin-tan: #d2b48c; /* Bege cominho */
 }
 
+/* Animações globais */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
 body {
     font-family: "Poppins", "Lato", sans-serif;
     background: linear-gradient(135deg, var(--ginger-cream) 0%, #fff8dc 100%);
@@ -528,13 +559,192 @@ body.menu-open {
     border-left: 3px solid #d84315;
 }
 
-/* Carrossel */
+/* ===== CARROSSEL APRIMORADO ===== */
 .carousel-item {
-    display: none;
-    animation: fadeIn 1s;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
 }
+
 .carousel-item.active {
-    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.carousel-item.prev {
+    transform: translateX(-100%);
+}
+
+/* Animações de entrada suaves */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Indicadores do carrossel */
+.carousel-indicator {
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.carousel-indicator.active {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Controles do carrossel com efeitos aprimorados */
+#prev-slide,
+#next-slide {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+#prev-slide:hover,
+#next-slide:hover {
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Barra de progresso do carrossel */
+#carousel-progress {
+    animation: progressBar 5s linear infinite;
+}
+
+@keyframes progressBar {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+/* Pausa no hover */
+#carousel-container:hover #carousel-progress {
+    animation-play-state: paused;
+}
+
+/* Efeitos parallax para os slides */
+.carousel-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.1) 0%,
+        transparent 50%,
+        rgba(255, 255, 255, 0.1) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+}
+
+.carousel-item.active::before {
+    opacity: 1;
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 768px) {
+    .carousel-item h1 {
+        font-size: 2.5rem !important;
+        line-height: 1.2;
+    }
+
+    .carousel-item p {
+        font-size: 1rem !important;
+    }
+
+    .carousel-indicator {
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    #prev-slide,
+    #next-slide {
+        padding: 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .carousel-item h1 {
+        font-size: 2rem !important;
+    }
+
+    .carousel-item .btn {
+        padding: 12px 24px !important;
+        font-size: 0.9rem !important;
+    }
+
+    .carousel-item .flex-col {
+        gap: 0.75rem !important;
+    }
+}
+
+/* Animação de texto nos slides */
+.carousel-item.active h1 {
+    animation: slideInRight 0.8s ease-out 0.2s both;
+}
+
+.carousel-item.active p {
+    animation: slideInRight 0.8s ease-out 0.4s both;
+}
+
+.carousel-item.active .btn {
+    animation: slideInRight 0.8s ease-out 0.6s both;
+}
+
+.carousel-item.active span {
+    animation: slideInRight 0.8s ease-out 0.1s both;
+}
+
+/* Efeito de hover nos botões do carrossel */
+.carousel-item .btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-item .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s;
+}
+
+.carousel-item .btn:hover::before {
+    left: 100%;
 }
 
 /* ==== ESTILOS AVANÇADOS PARA CARRINHO ==== */
