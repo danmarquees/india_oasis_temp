@@ -26,19 +26,64 @@
         <link rel="stylesheet" href="assets/css/styles.css" />
 
         <style>
+            /* Menu lateral - animações de slide */
+            #side-menu {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 288px !important;
+                height: 100vh !important;
+                background: white !important;
+                box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1) !important;
+                z-index: 9999 !important;
+                overflow-y: auto !important;
+                transform: translateX(-100%) !important;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+
+            #side-menu.open {
+                transform: translateX(0) !important;
+            }
+
+            #menu-overlay {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                background: rgba(0, 0, 0, 0.5) !important;
+                z-index: 9998 !important;
+                transition: opacity 0.3s ease-in-out !important;
+                opacity: 0 !important;
+                visibility: hidden !important;
+                pointer-events: none !important;
+            }
+
+            #menu-overlay:not(.hidden) {
+                opacity: 1 !important;
+                visibility: visible !important;
+                pointer-events: auto !important;
+            }
+
             /* Animações específicas para subcategorias */
             .subcategory-list {
                 max-height: 0;
                 overflow: hidden;
                 transition:
-                    max-height 0.3s ease-out,
-                    opacity 0.3s ease-out;
+                    max-height 0.4s ease-out,
+                    opacity 0.3s ease-out,
+                    padding 0.3s ease-out,
+                    margin 0.3s ease-out;
                 opacity: 0;
+                padding: 0;
+                margin: 0;
             }
 
             .subcategory-list.show {
-                max-height: 200px;
+                max-height: 300px;
                 opacity: 1;
+                padding: 0.5rem 0;
+                margin: 0.5rem 0;
             }
 
             .category-toggle.active .fa-chevron-down {
@@ -54,11 +99,64 @@
             .subcategory-link:hover {
                 transform: translateX(2px);
             }
+
+            /* Prevenir scroll quando menu estiver aberto */
+            body.menu-open {
+                overflow: hidden;
+            }
+
+            /* Animação de pulso para demonstração */
+            @keyframes pulse {
+                0%,
+                100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+            }
+
+            /* Tooltip de demonstração */
+            .demo-tooltip {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #ff6b35;
+                color: white;
+                padding: 0.5rem;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                white-space: nowrap;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                z-index: 1000;
+                pointer-events: none;
+            }
+
+            .demo-tooltip::before {
+                content: "";
+                position: absolute;
+                top: -4px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-left: 4px solid transparent;
+                border-right: 4px solid transparent;
+                border-bottom: 4px solid #ff6b35;
+            }
         </style>
     </head>
     <body class="text-gray-800">
         <!--
-        ==== MENU LATERAL RETRÁTIL ====
+
+            =
+            =
+
+                =
+            = M
+                    E
+
+                NU LATERAL RETRÁTIL ====
         Funcionalidades implementadas:
         - Menu lateral deslizante com overlay
         - Barra de busca em tempo real
@@ -74,7 +172,7 @@
         ></div>
         <aside
             id="side-menu"
-            class="fixed top-0 left-0 w-72 h-full bg-white shadow-lg z-50 overflow-y-auto"
+            class="fixed top-0 left-0 w-72 h-full bg-white shadow-lg overflow-y-auto"
         >
             <div class="p-4">
                 <button
@@ -387,9 +485,16 @@
                 <div class="flex items-center space-x-4">
                     <button
                         id="open-menu-btn"
-                        class="text-xl hover:text-primary"
+                        class="relative text-xl hover:text-primary bg-gradient-to-r from-primary to-secondary text-white p-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+                        title="Clique aqui para abrir o menu lateral!"
                     >
                         <i class="fas fa-bars"></i>
+                        <span
+                            class="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-ping"
+                        ></span>
+                        <span
+                            class="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"
+                        ></span>
                     </button>
                     <a href="index.html" class="text-3xl font-teko text-primary"
                         >India Oasis</a
@@ -2863,6 +2968,325 @@
                         .getElementById("login-modal")
                         .classList.add("hidden");
                 });
+
+            // ========================================
+            // FUNCIONALIDADE DO MENU LATERAL PARA DEMONSTRAÇÃO
+            // ========================================
+
+            document.addEventListener("DOMContentLoaded", function () {
+                console.log("🎯 Inicializando demonstração do menu lateral...");
+
+                // Elementos do menu
+                const sideMenu = document.getElementById("side-menu");
+                const menuOverlay = document.getElementById("menu-overlay");
+                const openMenuBtn = document.getElementById("open-menu-btn");
+                const closeMenuBtn = document.getElementById("close-menu-btn");
+                const searchInput = document.getElementById("search-input");
+
+                // Debug detalhado dos elementos
+                console.log("🔍 Verificando elementos:", {
+                    sideMenu: !!sideMenu,
+                    menuOverlay: !!menuOverlay,
+                    openMenuBtn: !!openMenuBtn,
+                    closeMenuBtn: !!closeMenuBtn,
+                    searchInput: !!searchInput,
+                });
+
+                // Verificar se todos os elementos existem
+                if (
+                    !sideMenu ||
+                    !menuOverlay ||
+                    !openMenuBtn ||
+                    !closeMenuBtn
+                ) {
+                    console.error("❌ Elementos do menu não encontrados!");
+                    console.error("Missing elements:", {
+                        sideMenu: !sideMenu ? "MISSING" : "OK",
+                        menuOverlay: !menuOverlay ? "MISSING" : "OK",
+                        openMenuBtn: !openMenuBtn ? "MISSING" : "OK",
+                        closeMenuBtn: !closeMenuBtn ? "MISSING" : "OK",
+                    });
+                    return;
+                }
+
+                console.log("✅ Elementos do menu encontrados!");
+
+                // Função para abrir o menu
+                function openMenu() {
+                    console.log("🔓 Abrindo menu...");
+                    console.log("Estado antes:", {
+                        menuOpen: sideMenu.classList.contains("open"),
+                        overlayHidden: menuOverlay.classList.contains("hidden"),
+                        bodyMenuOpen:
+                            document.body.classList.contains("menu-open"),
+                    });
+
+                    sideMenu.classList.add("open");
+                    menuOverlay.classList.remove("hidden");
+                    document.body.classList.add("menu-open");
+
+                    console.log("Estado depois:", {
+                        menuOpen: sideMenu.classList.contains("open"),
+                        overlayHidden: menuOverlay.classList.contains("hidden"),
+                        bodyMenuOpen:
+                            document.body.classList.contains("menu-open"),
+                    });
+
+                    // Foco no campo de busca quando menu abrir
+                    setTimeout(() => {
+                        if (searchInput) {
+                            searchInput.focus();
+                        }
+                    }, 300);
+                }
+
+                // Função para fechar o menu
+                function closeMenu() {
+                    console.log("🔒 Fechando menu...");
+                    console.log("Estado antes:", {
+                        menuOpen: sideMenu.classList.contains("open"),
+                        overlayHidden: menuOverlay.classList.contains("hidden"),
+                        bodyMenuOpen:
+                            document.body.classList.contains("menu-open"),
+                    });
+
+                    sideMenu.classList.remove("open");
+                    menuOverlay.classList.add("hidden");
+                    document.body.classList.remove("menu-open");
+
+                    console.log("Estado depois:", {
+                        menuOpen: sideMenu.classList.contains("open"),
+                        overlayHidden: menuOverlay.classList.contains("hidden"),
+                        bodyMenuOpen:
+                            document.body.classList.contains("menu-open"),
+                    });
+                }
+
+                // Event listeners
+                openMenuBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    console.log("👆 Botão abrir menu clicado");
+                    console.log("Elemento botão:", openMenuBtn);
+                    openMenu();
+                });
+
+                closeMenuBtn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    console.log("👆 Botão fechar menu clicado");
+                    console.log("Elemento botão:", closeMenuBtn);
+                    closeMenu();
+                });
+
+                // Fechar menu clicando no overlay
+                menuOverlay.addEventListener("click", function (e) {
+                    if (e.target === menuOverlay) {
+                        console.log("👆 Overlay clicado - fechando menu");
+                        closeMenu();
+                    }
+                });
+
+                // Fechar menu com tecla ESC
+                document.addEventListener("keydown", function (e) {
+                    if (
+                        e.key === "Escape" &&
+                        sideMenu.classList.contains("open")
+                    ) {
+                        console.log("⌨️ ESC pressionado - fechando menu");
+                        closeMenu();
+                    }
+                });
+
+                // ========================================
+                // FUNCIONALIDADES DE DEMONSTRAÇÃO
+                // ========================================
+
+                // Animar botão do menu para chamar atenção
+                function animateMenuButton() {
+                    openMenuBtn.style.animation = "pulse 2s infinite";
+
+                    // Parar animação após 10 segundos
+                    setTimeout(() => {
+                        openMenuBtn.style.animation = "";
+                    }, 10000);
+                }
+
+                // Adicionar tooltip de demonstração
+                function addDemoTooltip() {
+                    const tooltip = document.createElement("div");
+                    tooltip.className = "demo-tooltip";
+                    tooltip.textContent = "👈 Clique aqui para ver o menu!";
+                    tooltip.style.cssText = `
+                        position: absolute;
+                        top: 100%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: #ff6b35;
+                        color: white;
+                        padding: 0.5rem 0.75rem;
+                        border-radius: 6px;
+                        font-size: 0.75rem;
+                        white-space: nowrap;
+                        opacity: 0;
+                        transition: opacity 0.3s ease;
+                        z-index: 1000;
+                        pointer-events: none;
+                        margin-top: 5px;
+                    `;
+
+                    // Adicionar seta do tooltip
+                    const arrow = document.createElement("div");
+                    arrow.style.cssText = `
+                        position: absolute;
+                        top: -4px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 0;
+                        height: 0;
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-bottom: 4px solid #ff6b35;
+                    `;
+                    tooltip.appendChild(arrow);
+
+                    openMenuBtn.style.position = "relative";
+                    openMenuBtn.appendChild(tooltip);
+
+                    // Mostrar tooltip no hover
+                    openMenuBtn.addEventListener("mouseenter", () => {
+                        tooltip.style.opacity = "1";
+                    });
+
+                    openMenuBtn.addEventListener("mouseleave", () => {
+                        tooltip.style.opacity = "0";
+                    });
+
+                    // Mostrar tooltip automaticamente
+                    setTimeout(() => {
+                        tooltip.style.opacity = "1";
+                        setTimeout(() => {
+                            tooltip.style.opacity = "0";
+                        }, 3000);
+                    }, 2000);
+                }
+
+                // ========================================
+                // FUNCIONALIDADES DO MENU
+                // ========================================
+
+                // Expansão de categorias
+                const categoryToggles =
+                    document.querySelectorAll(".category-toggle");
+                categoryToggles.forEach((toggle) => {
+                    toggle.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        const subcategoryList =
+                            this.parentElement.querySelector(
+                                ".subcategory-list",
+                            );
+
+                        if (subcategoryList) {
+                            // Toggle classe show
+                            subcategoryList.classList.toggle("show");
+
+                            // Toggle classe hidden
+                            if (subcategoryList.classList.contains("show")) {
+                                subcategoryList.classList.remove("hidden");
+                            } else {
+                                setTimeout(() => {
+                                    subcategoryList.classList.add("hidden");
+                                }, 300);
+                            }
+
+                            // Rotacionar seta
+                            const icon = this.querySelector(".fa-chevron-down");
+                            if (icon) {
+                                icon.style.transform =
+                                    subcategoryList.classList.contains("show")
+                                        ? "rotate(180deg)"
+                                        : "rotate(0deg)";
+                            }
+
+                            console.log(
+                                "📂 Categoria expandida:",
+                                this.dataset.category,
+                            );
+                        }
+                    });
+                });
+
+                // Busca em tempo real (simulada)
+                if (searchInput) {
+                    const searchCounter = document.getElementById(
+                        "search-results-counter",
+                    );
+                    const resultsCount =
+                        document.getElementById("results-count");
+
+                    searchInput.addEventListener("input", function (e) {
+                        const query = e.target.value.trim();
+
+                        if (query.length > 0) {
+                            // Simular busca
+                            const fakeResults =
+                                Math.floor(Math.random() * 20) + 1;
+                            if (resultsCount)
+                                resultsCount.textContent = fakeResults;
+                            if (searchCounter)
+                                searchCounter.classList.remove("hidden");
+
+                            console.log(
+                                "🔍 Buscando por:",
+                                query,
+                                "- Resultados:",
+                                fakeResults,
+                            );
+                        } else {
+                            if (searchCounter)
+                                searchCounter.classList.add("hidden");
+                        }
+                    });
+                }
+
+                // Atualizar contadores do carrinho e wishlist
+                function updateCounters() {
+                    const cartCount =
+                        document.getElementById("cart-mini-count");
+                    const wishlistCount = document.getElementById(
+                        "wishlist-mini-count",
+                    );
+
+                    if (cartCount)
+                        cartCount.textContent = Math.floor(Math.random() * 10);
+                    if (wishlistCount)
+                        wishlistCount.textContent = Math.floor(
+                            Math.random() * 15,
+                        );
+                }
+
+                // Inicializar demonstração
+                setTimeout(() => {
+                    animateMenuButton();
+                    addDemoTooltip();
+                    updateCounters();
+                    console.log("🎉 Menu lateral pronto para demonstração!");
+
+                    // Teste adicional para garantir funcionamento
+                    console.log("🧪 Teste final dos elementos:", {
+                        menuExists:
+                            document.getElementById("side-menu") !== null,
+                        overlayExists:
+                            document.getElementById("menu-overlay") !== null,
+                        buttonExists:
+                            document.getElementById("open-menu-btn") !== null,
+                        menuStyle: window.getComputedStyle(sideMenu).transform,
+                        overlayStyle:
+                            window.getComputedStyle(menuOverlay).display,
+                    });
+                }, 1000);
+
+                // Simular atividade nos contadores a cada 5 segundos
+                setInterval(updateCounters, 5000);
+            });
         </script>
     </body>
 </html>
