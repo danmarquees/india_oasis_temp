@@ -14,13 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const products = [
     {
       id: 1,
-      name: "Garam Masala Premium",
+      name: "Arroz Basmati Clássico (1kg)",
       price: 25.0,
-      image: "https://placehold.co/400x400/D84315/FFFFFF?text=Garam+Masala",
+      image: "assets/img/prod1.jpeg",
       description:
         "Nossa mistura exclusiva de especiarias torradas e moídas na hora. Essencial para dar um toque quente e aromático a pratos de curry, lentilhas e vegetais.",
       rating: 4.9,
-      category: "Temperos",
+      category: "Grãos",
       reviews: [
         {
           author: "Ricardo F.",
@@ -53,13 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 3,
-      name: "Chá Masala Chai Tradicional",
+      name: "Arroz Basmati Parabolizado",
       price: 32.0,
-      image: "https://placehold.co/400x400/8D6E63/FFFFFF?text=Masala+Chai",
+      image: "assets/img/prod2.jpeg",
       description:
         "Uma mistura revigorante de chá preto Assam com cardamomo, canela, cravo e gengibre. Prepare um chai autêntico e cremoso em casa.",
       rating: 5.0,
-      category: "Chás",
+      category: "Grãos",
       reviews: [
         {
           author: "Camila G.",
